@@ -1,16 +1,15 @@
 import pathlib
 
-from topo_extend import topology
+from topo_extend.Topo_extend_v2 import topology
 
-#origin = [99.5, 101, 0]
-origin = [-5790, -35000, 0]
-extension = 2000
+origin = [99.5, 101, 0]
+extension = 500
 resolution = 1
 
-case = 6
+case = 1
 
-input_path = pathlib.Path('test_case_{}/test_case_{}.stl'.format(case, case))
-output_path = pathlib.Path('test_case_{}/cleaned_v2.stl'.format(case))
+input_path = pathlib.Path('test_case_{}.stl'.format(case))
+output_path = pathlib.Path('cleaned_v2.stl')
 
 mesh_clean = topology(origin=origin,
                       extension=extension,
@@ -19,7 +18,7 @@ mesh_clean = topology(origin=origin,
 mesh_clean.import_mesh(input_path)
 
 mesh_clean.create_matrix()
-mesh_clean._remove_outside_roi(inclusion_radius=1000)
+mesh_clean._remove_outside_roi(inclusion_radius=50)
 mesh_clean.plot_topology()
 
 #internal_functions
