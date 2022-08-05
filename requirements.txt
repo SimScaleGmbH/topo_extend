@@ -1,0 +1,6 @@
+pathlib 
+open3d
+numpy
+matplotlib
+scipy
+numpy-stl
