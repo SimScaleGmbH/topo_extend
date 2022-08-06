@@ -21,15 +21,15 @@ output_path = pathlib.Path('TOPOLOGY_EXTENSION.stl')
 
 Initialise the topology object
 ```bash
-mesh_clean = topology(origin=origin,
-                      resolution=resolution)
+mesh_clean = topology(origin=[0,0,0],
+                      resolution=1)
 ```
 
 Perform the extension
 ```bash
 mesh_clean.extend_stl(input_path,
                       output_path,
-                      extension_radius=extension,
+                      extension_radius=500,
                       inclusion_radius=50)
 ```
 
