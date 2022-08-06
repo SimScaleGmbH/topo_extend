@@ -287,8 +287,7 @@ class topology():
         self.plot_topology()
 
         #internal_functions
-        self._create_polar_matrix(extension_radius=2*self.extension_radius, 
-                                  angular_resolution=1)
+        self._create_polar_matrix(angular_resolution=1)
         
         self._interpolate_to_polar()
         self._fill_radius()
