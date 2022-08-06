@@ -35,6 +35,19 @@ class topology():
         self.grid = None
         
     def import_mesh(self, input_path):
+        '''
+        Take path, import mesh to open3d
+
+        Parameters
+        ----------
+        input_path : pathlib.Path
+            A path to the .stl file to import.
+
+        Returns
+        -------
+        None.
+
+        '''
         self.input_path = input_path
         
         input_mesh = o3d.io.read_triangle_mesh(
@@ -45,6 +58,19 @@ class topology():
         self.mesh = input_mesh
         
     def create_matrix(self):
+        '''
+        Take the mesh, create aa matrix
+        
+        The matrix is of nx11:
+            x, y, z, nx, ny, nz, theta, radius, distance, blured distance, combined distance
+            
+        The last column is unused but reserved for gradient.
+        
+        Returns
+        -------
+        None.
+
+        '''
         self.mesh_min = self.mesh.get_min_bound().astype(int)
         self.mesh_max = self.mesh.get_max_bound().astype(int)
 
@@ -52,10 +78,6 @@ class topology():
         #   x, y, z, nx, ny, nz, theta, radius, distance, blured distance, combined distance
         #
         #Therefore, matrix will be n x 9
-        '''
-        x = np.arange(self.mesh_min[0]-self.extension, self.mesh_max[0]+self.extension, self.resolution)
-        y = np.arange(self.mesh_min[1]-self.extension, self.mesh_max[1]+self.extension, self.resolution)
-        '''
         
         x = np.arange(-self.extension_radius, self.extension_radius, self.resolution)
         y = np.arange(-self.extension_radius, self.extension_radius, self.resolution)
@@ -100,6 +122,19 @@ class topology():
         self.matrix = matrix
         
     def _remove_outside_roi(self, inclusion_radius):
+        '''
+        Takes an inclusion radius and keeps anything within that radius.
+
+        Parameters
+        ----------
+        inclusion_radius : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        '''
         index = np.where(self.matrix[:, 7] >= inclusion_radius)[0]
         
         matrix = self.matrix[:, 8]
@@ -110,6 +145,22 @@ class topology():
         self.matrix[:, 8] = matrix
         
     def _create_polar_matrix(self, angular_resolution=1):
+        '''
+        Create a matrix in polar coordinate space, theta for angle, r for radius
+
+        Parameters
+        ----------
+        angular_resolution : int or float, optional
+            This is the resolution in the angular space, typically 1 is used,
+            where one would expect 360 as the matrix dimension. 
+            
+            The default is 1.
+
+        Returns
+        -------
+        None.
+
+        '''
         
         self.angle_resolution = angular_resolution
         
@@ -131,7 +182,14 @@ class topology():
         self.polar_matrix = matrix
         
     def _interpolate_to_polar(self):
-        
+        '''
+        Interpoalate from cartesian to polar space
+
+        Returns
+        -------
+        None.
+
+        '''
         points = self.matrix[:, 6:8]
         #aa = self.matrix[:, 6].reshape(self.grid.shape[0:2])
         #rr = self.matrix[:, 7].reshape(self.grid.shape[0:2])
@@ -147,6 +205,14 @@ class topology():
         self.polar_matrix[:, :, 2] = zz1
         
     def _fill_radius(self):
+        '''
+        Fill the missing data with the parimeter height
+
+        Returns
+        -------
+        None.
+
+        '''
         matrix = self.polar_matrix
         
         index = np.where(np.isfinite(matrix[:,:, 2])==True)
@@ -163,6 +229,14 @@ class topology():
         self.polar_matrix = matrix
         
     def _interpolate_missing_from_polar(self):
+        '''
+        interpolate anything missing in the cartesian space from the polar space
+
+        Returns
+        -------
+        None.
+
+        '''
         points = np.vstack(self.polar_matrix[:, :, 0:2])
         zz = self.polar_matrix[:, :, 2].reshape(-1)
         
@@ -178,6 +252,14 @@ class topology():
         matrix[index] = zz1[index]
         
     def _create_smoothed_matrix(self):
+        '''
+        create a smoothed cartesian space using gausian blur
+
+        Returns
+        -------
+        None.
+
+        '''
         zz = self.matrix[:, 8].reshape(self.grid.shape[0:2])
         
         zz_smoothed = gaussian_filter(zz, sigma=5)
@@ -185,6 +267,16 @@ class topology():
         self.matrix[:, 9] = zz_smoothed.reshape(-1)
         
     def _blend_matricies(self):
+        '''
+        Blend the original and smoothed cartesian space
+        
+        This blend is done at the inclusion radius, using a sigmoid function
+
+        Returns
+        -------
+        None.
+
+        '''
         zz_original = self.matrix[:, 8]
         zz_smoothed = self.matrix[:, 9]
         
@@ -201,16 +293,46 @@ class topology():
         self.matrix[:, 8] = blended_matrix
         
     def plot_topology(self):
+        '''
+        Simply plot the height map in cartesian space
+
+        Returns
+        -------
+        None.
+
+        '''
         zz = self.matrix[:, 8].reshape(self.grid.shape)
         plt.imshow(zz)
         plt.show()
         
     def plot_polar_topology(self):
+        '''
+        simply plot the height map in polar space
+
+        Returns
+        -------
+        None.
+
+        '''
         zz = self.polar_matrix[:, :, 2]
         plt.imshow(zz)
         plt.show()
         
     def export_mesh(self, output_path):
+        '''
+        Take a path for an STL, export the height map into an stl mesh
+
+        Parameters
+        ----------
+        output_path : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        '''
         
         def return_vector_List(xyz_array):
             #Legacy function
@@ -279,7 +401,29 @@ class topology():
                    extension_radius=1000,
                    inclusion_radius=300,
                    ):
-        
+        '''
+        A function that wraps a typical process into a workflow
+
+        Parameters
+        ----------
+        input_path : pathlib.Path
+            The .stl file to import.
+        output_path : pathlib.Path
+            the .stl file to output.
+        extension_radius : int or float, optional
+            The distance in meters to extend the topology by. 
+            
+            The default is 1000.
+        inclusion_radius : int or float, optional
+            A distance in metres from the origin in which we want to keep. 
+            
+            The default is 300, the same as a default ROI in SimScale.
+
+        Returns
+        -------
+        None.
+
+        '''
         self.extension_radius = extension_radius
         self.import_mesh(input_path)
         
