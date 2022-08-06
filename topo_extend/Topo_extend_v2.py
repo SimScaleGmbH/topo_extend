@@ -149,7 +149,7 @@ class topology():
         self.angle_resolution = angular_resolution
         
         a = np.arange(-180, 180 + angular_resolution, angular_resolution)
-        r = np.arange(0, self.extension_radius, self.resolution)
+        r = np.arange(0, self.extension_radius*2, self.resolution)
         
         aa, rr = np.meshgrid(a, r)
         
