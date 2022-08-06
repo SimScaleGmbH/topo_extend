@@ -285,7 +285,6 @@ class topology():
         self._remove_outside_roi(inclusion_radius=inclusion_radius)
         self.plot_topology()
 
-        #internal_functions
         self._create_polar_matrix(angular_resolution=1)
         
         self._interpolate_to_polar()
@@ -293,8 +292,5 @@ class topology():
         self._interpolate_missing_from_polar()
         self._create_smoothed_matrix()
         self._blend_matricies()
-
-        self.plot_topology()
-        self.plot_polar_topology()
 
         self.export_mesh(output_path)
