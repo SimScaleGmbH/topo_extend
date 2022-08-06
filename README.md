@@ -6,6 +6,33 @@ A module that takes an .stl file of a topology that is not prepared for a Pedest
 pip install git+https://github.com/DHLynch/topo_extend.git
 ```
 
+### Quick Start
+Import this package and pathlib
+```bash
+from topo_extend.Topo_extend_v2 import topology
+import pathlib
+```
+
+Set the stl to import using a path, and define the output stl using a path
+```bash
+input_path = pathlib.Path('test_case_1.stl')
+output_path = pathlib.Path('TOPOLOGY_EXTENSION.stl')
+```
+
+Initialise the topology object
+```bash
+mesh_clean = topology(origin=origin,
+                      resolution=resolution)
+```
+
+Perform the extension
+```bash
+mesh_clean.extend_stl(input_path,
+                      output_path,
+                      extension_radius=extension,
+                      inclusion_radius=50)
+```
+
 # Introduction
 SimScale's LBM/PWC solution is incredibly robust to CAD/Geometry/3D model quality issues, however some preperation is still required to ensure results are reliable.
 
