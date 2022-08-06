@@ -33,6 +33,11 @@ mesh_clean.extend_stl(input_path,
                       inclusion_radius=50)
 ```
 
+Output
+Original Mesh             |  Mesh after extension
+:-------------------------:|:-------------------------:
+![](graphics/original_mesh.png)  |  ![](graphics/extended_mesh.png)
+
 # Introduction
 SimScale's LBM/PWC solution is incredibly robust to CAD/Geometry/3D model quality issues, however some preperation is still required to ensure results are reliable.
 
