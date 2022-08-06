@@ -1,4 +1,3 @@
-import pathlib 
 import open3d as o3d
 import numpy as np
 import matplotlib.pyplot as plt
@@ -48,7 +47,7 @@ def base_array_to_face_vector(base_array):
 
 class topology():
     
-    def __init__(self, origin=np.array([0,0,0]), extension=0, resolution=1):
+    def __init__(self, origin=np.array([0,0,0]), resolution=1):
         
         self.input_path = None
         self.output_path = None
@@ -57,7 +56,6 @@ class topology():
         self.mesh_max = None
         
         self.origin = origin
-        self.extension = extension
         self.resolution = resolution 
         
         self.disc_radius = None
@@ -94,8 +92,8 @@ class topology():
         y = np.arange(self.mesh_min[1]-self.extension, self.mesh_max[1]+self.extension, self.resolution)
         '''
         
-        x = np.arange(-self.extension, self.extension, self.resolution)
-        y = np.arange(-self.extension, self.extension, self.resolution)
+        x = np.arange(-self.extension_radius, self.extension_radius, self.extension_radius)
+        y = np.arange(-self.extension_radius, self.extension_radius, self.extension_radius)
         
         z = self.mesh_max[2]
 
@@ -146,13 +144,12 @@ class topology():
         self.disc_radius = inclusion_radius
         self.matrix[:, 8] = matrix
         
-    def _create_polar_matrix(self, extension_radius, angular_resolution=1):
+    def _create_polar_matrix(self, angular_resolution=1):
         
         self.angle_resolution = angular_resolution
-        self.extension_radius = extension_radius
         
         a = np.arange(-180, 180 + angular_resolution, angular_resolution)
-        r = np.arange(0, extension_radius, self.resolution)
+        r = np.arange(0, self.extension_radius, self.resolution)
         
         aa, rr = np.meshgrid(a, r)
         
@@ -273,3 +270,31 @@ class topology():
         self.output_mesh=final_mesh
         
         final_mesh.save(output_path, mode=stl.stl.Mode.ASCII)
+        
+    def extend_stl(self, 
+                   input_path,
+                   output_path,
+                   origin=np.array([0,0,0]),
+                   extension_radius=1000,
+                   inclusion_radius=300,
+                   ):
+        
+        self.extension_radius = extension_radius
+        self.import_mesh(input_path)
+        
+        self.create_matrix()
+        self._remove_outside_roi(inclusion_radius=inclusion_radius)
+        self.plot_topology()
+
+        #internal_functions
+        self._create_polar_matrix(extension_radius=2*self.extension, angular_resolution=1)
+        self._interpolate_to_polar()
+        self._fill_radius()
+        self._interpolate_missing_from_polar()
+        self._create_smoothed_matrix()
+        self._blend_matricies()
+
+        self.plot_topology()
+        self.plot_polar_topology()
+
+        self.export_mesh(output_path)
