@@ -92,8 +92,8 @@ class topology():
         y = np.arange(self.mesh_min[1]-self.extension, self.mesh_max[1]+self.extension, self.resolution)
         '''
         
-        x = np.arange(-self.extension_radius, self.extension_radius, self.extension_radius)
-        y = np.arange(-self.extension_radius, self.extension_radius, self.extension_radius)
+        x = np.arange(-self.extension_radius, self.extension_radius, self.resolution)
+        y = np.arange(-self.extension_radius, self.extension_radius, self.resolution)
         
         z = self.mesh_max[2]
 
@@ -274,7 +274,6 @@ class topology():
     def extend_stl(self, 
                    input_path,
                    output_path,
-                   origin=np.array([0,0,0]),
                    extension_radius=1000,
                    inclusion_radius=300,
                    ):

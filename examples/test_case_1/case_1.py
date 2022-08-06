@@ -18,4 +18,4 @@ mesh_clean.extend_stl(input_path,
                       output_path,
                       origin=origin,
                       extension_radius=extension,
-                      inclusion_radius=300)
+                      inclusion_radius=50)

@@ -1,0 +1,16 @@
+solid cleaned_v2.stl
+facet normal nan nan -250000.0
+  outer loop
+    vertex -400.5 -399.0 nan
+    vertex -400.5 101.0 nan
+    vertex 99.5 101.0 nan
+  endloop
+endfacet
+facet normal nan nan 250000.0
+  outer loop
+    vertex -400.5 -399.0 nan
+    vertex 99.5 -399.0 nan
+    vertex 99.5 101.0 nan
+  endloop
+endfacet
+endsolid cleaned_v2.stl
