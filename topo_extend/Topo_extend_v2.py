@@ -8,42 +8,7 @@ from scipy.ndimage import gaussian_filter
 from stl import mesh
 import stl
 
-def return_vector_List(xyz_array):
-    #Legacy function
-    x, y, z = xyz_array[1, :, :], xyz_array[0, :, :], xyz_array[2, :, :]
-    
-    x, y, z = x.reshape(-1), y.reshape(-1), z.reshape(-1)
-    
-    vector_list = np.array([x, y, z]).T
-    return vector_list
 
-def return_face_vector_list(list_coordinate_points):
-    #Legacy function
-    list_coordinate_list = []
-    for _list in list_coordinate_points:
-        list_coordinate_list.append(return_vector_List(_list))
-    
-    return np.stack(list_coordinate_list, axis=1)
-
-def base_array_to_face_vector(base_array):
-    #Legacy function
-    coordinate_p1 = base_array[:, :-1, :-1]
-    coordinate_p2 = base_array[:, 1:, :-1]
-    coordinate_p3 = base_array[:, 1:, 1:]
-    coordinate_p4 = base_array[:, :-1, 1:]
-    
-    #We need two faces per pixel
-    vector_list1 = return_face_vector_list([coordinate_p1, 
-                                                  coordinate_p2, 
-                                                  coordinate_p3])
-    
-    vector_list2 = return_face_vector_list([coordinate_p1, 
-                                                  coordinate_p4, 
-                                                  coordinate_p3])
-
-    vector_list = np.concatenate([vector_list1, vector_list2], axis=0)
-    
-    return vector_list
 
 class topology():
     
@@ -246,6 +211,43 @@ class topology():
         plt.show()
         
     def export_mesh(self, output_path):
+        
+        def return_vector_List(xyz_array):
+            #Legacy function
+            x, y, z = xyz_array[1, :, :], xyz_array[0, :, :], xyz_array[2, :, :]
+            
+            x, y, z = x.reshape(-1), y.reshape(-1), z.reshape(-1)
+            
+            vector_list = np.array([x, y, z]).T
+            return vector_list
+
+        def return_face_vector_list(list_coordinate_points):
+            #Legacy function
+            list_coordinate_list = []
+            for _list in list_coordinate_points:
+                list_coordinate_list.append(return_vector_List(_list))
+            
+            return np.stack(list_coordinate_list, axis=1)
+
+        def base_array_to_face_vector(base_array):
+            #Legacy function
+            coordinate_p1 = base_array[:, :-1, :-1]
+            coordinate_p2 = base_array[:, 1:, :-1]
+            coordinate_p3 = base_array[:, 1:, 1:]
+            coordinate_p4 = base_array[:, :-1, 1:]
+            
+            #We need two faces per pixel
+            vector_list1 = return_face_vector_list([coordinate_p1, 
+                                                          coordinate_p2, 
+                                                          coordinate_p3])
+            
+            vector_list2 = return_face_vector_list([coordinate_p1, 
+                                                          coordinate_p4, 
+                                                          coordinate_p3])
+
+            vector_list = np.concatenate([vector_list1, vector_list2], axis=0)
+            
+            return vector_list
         
         self.output_path = output_path
         
