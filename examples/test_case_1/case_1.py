@@ -5,9 +5,11 @@ input_path = pathlib.Path('test_case_1.stl')
 output_path = pathlib.Path('TOPOLOGY_EXTENSION.stl')
 
 mesh_clean = topology(origin=[99.5, 101, 0],
-                      resolution=1)
+                      resolution=2)
 
 mesh_clean.extend_stl(input_path,
                       output_path,
                       extension_radius=500,
                       inclusion_radius=50)
+
+mesh_clean.get_no_triangles()

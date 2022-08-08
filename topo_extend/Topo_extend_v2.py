@@ -395,6 +395,15 @@ class topology():
         
         final_mesh.save(output_path, mode=stl.stl.Mode.ASCII)
         
+    def get_no_triangles(self):
+        eval_mesh = o3d.io.read_triangle_mesh(
+            self.output_path.as_posix())
+
+        triangles = len(eval_mesh.triangles)
+
+        print('Mesh has {} Tiangles'.format(triangles))
+        return triangles
+        
     def extend_stl(self, 
                    input_path,
                    output_path,
