@@ -7,6 +7,7 @@ from scipy.ndimage import gaussian_filter
 
 from stl import mesh
 import stl
+import pyvista
 
 
 
@@ -403,6 +404,14 @@ class topology():
 
         print('Mesh has {} Tiangles'.format(triangles))
         return triangles
+    
+    def reduce_mesh(self, percentage):
+        mesh = pyvista.read(self.output_path.as_posix())
+        decimated = mesh.decimate(percentage)
+        decimated.save(self.output_path.as_posix(), 
+                  binary=False,
+                  texture=None)
+        
         
     def extend_stl(self, 
                    input_path,
