@@ -13,3 +13,4 @@ mesh_clean.extend_stl(input_path,
                       inclusion_radius=50)
 
 mesh_clean.get_no_triangles()
+mesh_clean.reduce_mesh(0.9)
