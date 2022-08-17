@@ -1,6 +1,14 @@
 # Short Summary
 A module that takes an .stl file of a topology that is not prepared for a Pedestrian Wind Comfort Analysis on the SimScale platform, and return an stl file that is.
 
+### Workflow
+1. Export your layers into .stl file format, a list of typical layers are as follows:
+    a. BUILDINGS_OF_INTEREST.stl
+    b. CONTEXT.stl
+    c. TOPOLOGY.stl
+2. Use the example script pointing the input files at the TOPOLOGY.stl 
+3. Zip the TOPOLOGY_EXTENSION.stl, BUILDINGS_OF_INTEREST.stl and CONTEXT.stl into a .zip and upload to SimScale
+
 ### Installation
 ```bash
 pip install git+https://github.com/DHLynch/topo_extend.git
