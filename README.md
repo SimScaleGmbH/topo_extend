@@ -66,10 +66,11 @@ To be able to obtain a reasonable topology surface from a typical users topology
 An experienced user will know that more original topology is better, but will be able to weigh up how much is needed.
 
 # Future development
-1. Currently the mesh, although clean, cn be large, this can be controlled by setting a resolution but really we would like to remove cells in parts of the surface that are not dramatically changing making the file size more efficient.
-2. Cut the mesh and export as a region of interest mesh, inclusion mesh and extension mesh.
-3. Fill gaps in the mesh that lie in the inclusion circle
-4. Create some reporting where the height map, and explaination of the topology elements are given. For example, what holes were filled automatically or where was the region of inclusion and region of interest defined.
-5. A CLI function to do some default processing
-6. integrate the CLI into a grasshopper component.
+1. Cut the mesh and export as a region of interest mesh, inclusion mesh and extension mesh.
+2. Fill gaps in the mesh that lie in the inclusion circle
+3. Create some reporting where the height map, and explaination of the topology elements are given. For example, what holes were filled automatically or where was the region of inclusion and region of interest defined.
+4. A CLI function to do some default processing
+5. integrate the CLI into a grasshopper component.
 
+# Change log
+17.08.22: Added functionality to reduce a mesh by %, also added a fix for some topology extensions were infinity was reported for the highest points.
