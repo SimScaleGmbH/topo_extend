@@ -83,7 +83,8 @@ class topology():
         x = np.arange(-self.extension_radius, self.extension_radius, self.resolution)
         y = np.arange(-self.extension_radius, self.extension_radius, self.resolution)
         
-        z = self.mesh_max[2]
+        z = self.mesh_max[2] + 1 #We add 1 to ensure the initial 
+                                 #point is higher than the max
 
         xx, yy, zz = np.meshgrid(x, y, z)
 
@@ -114,7 +115,9 @@ class topology():
 
         ans = scene.cast_rays(rays)
         t_hit = ans['t_hit'].numpy()
-        height = self.mesh_max[2] - t_hit.reshape(xx.shape[0:2])
+        
+        #We subtract 1 to counter the 1 we added earlier
+        height = self.mesh_max[2] - t_hit.reshape(xx.shape[0:2]) - 1
 
         self.grid = height.reshape(xx.shape)
 
