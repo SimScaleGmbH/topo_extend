@@ -73,6 +73,11 @@ To be able to obtain a reasonable topology surface from a typical users topology
 
 An experienced user will know that more original topology is better, but will be able to weigh up how much is needed.
 
+# Topology holes and other imperfections
+A hole in the topology is defined by an area withing the main disk, which is surrounded by topology, i.e. its missing topology not at the edge of the circle. 
+
+Holes are not desired in a topology since flow might drastically effect CFD results. To combat this, we advise users to at least roughly patch the hole prior to running this script. However, to further safegard, if a hole is present this script automatically fills the hole with a height of the lowest point in the topology. This is the most simple form of handling and prevents the worst flow interactions with holes.
+
 # Future development
 1. Cut the mesh and export as a region of interest mesh, inclusion mesh and extension mesh.
 2. Fill gaps in the mesh that lie in the inclusion circle

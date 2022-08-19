@@ -12,9 +12,9 @@ mesh_clean.extend_stl(input_path,
                       extension_radius=500,
                       inclusion_radius=50)
 
-print('Before mesh reduction:')
-mesh_clean.get_no_triangles()
+no_triangles = mesh_clean.get_no_triangles()
+print('Before mesh reduction: {}'.format(no_triangles))
 
-print('After mesh reduction:')
-mesh_clean.reduce_mesh(0.9)
-mesh_clean.get_no_triangles()
+mesh_clean.reduce_mesh_target_size(50)
+no_triangles = mesh_clean.get_no_triangles()
+print('After mesh reduction: {}'.format(no_triangles))
