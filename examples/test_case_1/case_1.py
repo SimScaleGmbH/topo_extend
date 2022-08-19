@@ -16,5 +16,5 @@ print('Before mesh reduction:')
 mesh_clean.get_no_triangles()
 
 print('After mesh reduction:')
-mesh_clean.reduce_mesh(0.9)
+mesh_clean.reduce_mesh_target_number(200000)
 mesh_clean.get_no_triangles()

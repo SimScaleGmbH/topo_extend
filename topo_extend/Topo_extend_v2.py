@@ -405,7 +405,6 @@ class topology():
 
         triangles = len(eval_mesh.triangles)
 
-        print('Mesh has {} Tiangles'.format(triangles))
         return triangles
     
     def reduce_mesh_percentage(self, percentage):
