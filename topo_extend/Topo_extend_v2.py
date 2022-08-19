@@ -419,6 +419,19 @@ class topology():
         
         self.reduce_mesh_percentage(percentage)
         
+    def reduce_mesh_target_size(self, no_mega_bytes=50):
+        x1 = 200000
+        y1 = 50.9
+        
+        x2 = 1000000
+        y2 = 243.4
+        
+        m = (y2-y1)/(x2-x1)
+        
+        x_t = no_mega_bytes/m
+        
+        self.reduce_mesh_target_number(number_of_triangles=x_t)
+        
     def extend_stl(self, 
                    input_path,
                    output_path,
