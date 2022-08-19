@@ -15,6 +15,6 @@ mesh_clean.extend_stl(input_path,
 no_triangles = mesh_clean.get_no_triangles()
 print('Before mesh reduction: {}'.format(no_triangles))
 
-mesh_clean.reduce_mesh_target_number(1000000)
+mesh_clean.reduce_mesh_target_size(50)
 no_triangles = mesh_clean.get_no_triangles()
 print('After mesh reduction: {}'.format(no_triangles))
