@@ -408,13 +408,17 @@ class topology():
         print('Mesh has {} Tiangles'.format(triangles))
         return triangles
     
-    def reduce_mesh(self, percentage):
+    def reduce_mesh_percentage(self, percentage):
         mesh = pyvista.read(self.output_path.as_posix())
         decimated = mesh.decimate(percentage)
         decimated.save(self.output_path.as_posix(), 
                   binary=False,
                   texture=None)
         
+    def reduce_mesh_target_number(self, number_of_triangles=200000.0):
+        percentage = 1 - (number_of_triangles / self.get_no_triangles())
+        
+        self.reduce_mesh_percentage(percentage)
         
     def extend_stl(self, 
                    input_path,
