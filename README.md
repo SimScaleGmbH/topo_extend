@@ -87,3 +87,4 @@ Holes are not desired in a topology since flow might drastically effect CFD resu
 
 # Change log
 17.08.22: Added functionality to reduce a mesh by %, also added a fix for some topology extensions were infinity was reported for the highest points.
+19.08.22: Added functionality to reduce a mesh to a target number of triangles or to a target file size in megabytes.
