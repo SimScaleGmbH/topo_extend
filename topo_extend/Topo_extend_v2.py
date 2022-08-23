@@ -117,7 +117,7 @@ class topology():
         t_hit = ans['t_hit'].numpy()
         
         #We subtract 1 to counter the 1 we added earlier
-        height = self.mesh_max[2] - t_hit.reshape(xx.shape[0:2]) - 1
+        height = self.mesh_max[2] - t_hit.reshape(xx.shape[0:2]) + 1
 
         self.grid = height.reshape(xx.shape)
 
