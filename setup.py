@@ -3,7 +3,7 @@ import setuptools
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
-setuptools.setup(name='topo-extend',
+setuptools.setup(name='topoExtend',
                  use_scm_version=True,
                  setup_requires=['setuptools_scm'],
                  description='A SimScale API wrapper with easy to set objects for External Building Aerodynamics',
