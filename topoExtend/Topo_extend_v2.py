@@ -273,7 +273,7 @@ class topology():
             print("Number of points in original mesh: {}".format(len(matrix)))
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
-            nintyith_percentile = np.percentile(absolute_matrix, 95)
+            nintyith_percentile = np.percentile(absolute_matrix, 99)
             absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
                                        nintyith_percentile, absolute_matrix)
             
@@ -356,7 +356,7 @@ class topology():
         
         zz = self.matrix[:, 10].reshape(self.grid.shape)
         abs_zz = np.abs(zz)
-        nintyith_percentile = np.percentile(abs_zz, 95)
+        nintyith_percentile = np.percentile(abs_zz, 99)
         
         
         plt.imshow(abs_zz, vmin=0, vmax=nintyith_percentile)
