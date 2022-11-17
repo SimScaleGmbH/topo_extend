@@ -273,7 +273,7 @@ class topology():
             print("Number of points in original mesh: {}".format(len(matrix)))
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
-            nintyith_percentile = np.percentile(absolute_matrix, 99)
+            nintyith_percentile = np.percentile(absolute_matrix, 99.99)
             absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
                                        nintyith_percentile, absolute_matrix)
             
