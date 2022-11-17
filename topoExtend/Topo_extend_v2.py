@@ -273,7 +273,7 @@ class topology():
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             scaler = MinMaxScaler()
-            data = absolute_matrix
+            data = np.log(10*absolute_matrix)
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
@@ -358,7 +358,7 @@ class topology():
 
         '''
         zz = self.matrix[:, 11].reshape(self.grid.shape)
-        plt.imshow(zz, cmap='gray')
+        plt.imshow(zz, cmap='binary')
         plt.show()
         
     def plot_polar_topology(self):
