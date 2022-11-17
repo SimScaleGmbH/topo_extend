@@ -1,4 +1,4 @@
-from topo_extend.Topo_extend_v2 import topology
+from topoExtend.Topo_extend_v2 import topology
 import pathlib
 
 input_path = pathlib.Path('test_case_1.stl')
