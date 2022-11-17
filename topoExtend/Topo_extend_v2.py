@@ -278,7 +278,7 @@ class topology():
         
     def _createProabilityMatrix(self):
         
-        absolute_matrix = np.abs(self.matrix[:, 10].reshape(-1, 1))
+        absolute_matrix = np.abs(self.matrix[:, 11].reshape(-1, 1))
         
         nintyith_percentile = np.percentile(absolute_matrix, 99)
         absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
