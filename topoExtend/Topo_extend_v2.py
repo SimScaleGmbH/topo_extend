@@ -513,9 +513,12 @@ class topology():
         points = pv.PolyData(xyz)
         
         remesh = points.delaunay_2d()
-        remesh.save(self.output_path.as_posix(), 
-                    binary=False,
-                    texture=None)
+        
+        recentred = remesh.translate(self.origin, inplace=True)
+        
+        recentred.save(self.output_path.as_posix(), 
+                       binary=False,
+                       texture=None)
         
         
     def get_no_triangles(self):
