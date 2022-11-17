@@ -1,5 +1,6 @@
 from topoExtend.Topo_extend_v2 import topology
 import pathlib
+import numpy as np
 
 input_path = pathlib.Path('test_case_1.stl')
 output_path = pathlib.Path('TOPOLOGY_EXTENSION.stl')
@@ -15,6 +16,10 @@ mesh_clean.extend_stl(input_path,
 no_triangles = mesh_clean.get_no_triangles()
 print('Before mesh reduction: {}'.format(no_triangles))
 
+print(np.max(np.abs(mesh_clean.matrix[:, 10])))
+print(np.min(np.abs(mesh_clean.matrix[:, 10])))
+'''
 mesh_clean.reduce_mesh_target_size(50) #Megabytes
 no_triangles = mesh_clean.get_no_triangles()
 print('After mesh reduction: {}'.format(no_triangles))
+'''
