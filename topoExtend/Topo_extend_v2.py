@@ -6,6 +6,7 @@ from scipy import interpolate
 from scipy.ndimage import gaussian_filter
 
 from sklearn import preprocessing
+from sklearn.preprocessing import MinMaxScaler
 
 from stl import mesh
 import stl
@@ -270,7 +271,12 @@ class topology():
         
         def createProabilityMatrix(matrix):
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
-            normalised = preprocessing.normalize(absolute_matrix)[:,0]
+            
+            scaler = MinMaxScaler()
+            scaler.fit(self.matrix[:, 10].reshape(-1, 1))
+            
+            normalised = scaler.transform(self.matrix[:, 10].reshape(-1, 1))
+            #normalised = preprocessing.normalize(absolute_matrix)[:,0]
             
             #normalised = np.where(normalised < 0, 0, normalised)
             return normalised
