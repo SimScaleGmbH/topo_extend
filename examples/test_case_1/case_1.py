@@ -21,7 +21,7 @@ print('Before mesh reduction: {}'.format(no_triangles))
 
 print(np.max(mesh_clean.matrix[:, 11]))
 print(np.min(mesh_clean.matrix[:, 11]))
-
+print(mesh_clean.matrix[:, 11])
 
 '''
 mesh_clean.reduce_mesh_target_size(50) #Megabytes

@@ -358,7 +358,7 @@ class topology():
 
         '''
         zz = self.matrix[:, 11].reshape(self.grid.shape)
-        plt.imshow(zz)
+        plt.imshow(zz, cmap='gray')
         plt.show()
         
     def plot_polar_topology(self):
