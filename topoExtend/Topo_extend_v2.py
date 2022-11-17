@@ -80,7 +80,7 @@ class topology():
 
         #Geometry point matrix will have dimensions:
         #   x, y, z, nx, ny, nz, theta, radius, distance, blured distance, 
-        #   combined distance, gradient, point inclusion
+        #   combined distance, gradient, probability, point inclusion
         #
         #Therefore, matrix will be n x 9
         
@@ -283,11 +283,14 @@ class topology():
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
-            points = randProb(normalised)
-            print("Number of points in final mesh: {}".format(np.sum(points)))
-            return points
+            
+            return normalised
         
         self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10])
+        
+        self.matrix[:, 12] = randProb(self.matrix[:, 11])
+        
+        print("Number of points in final mesh: {}".format(self.matrix[:, 12]))
         
     def _create_smoothed_matrix(self):
         '''
@@ -362,7 +365,7 @@ class topology():
         plt.imshow(abs_zz, vmin=0, vmax=nintyith_percentile)
         plt.show()
         
-    def plot_topology_points(self):
+    def plot_topology_probability(self):
         '''
         Simply plot the height map in cartesian space
 
@@ -372,6 +375,19 @@ class topology():
 
         '''
         zz = self.matrix[:, 11].reshape(self.grid.shape)
+        plt.imshow(zz)
+        plt.show()
+        
+    def plot_topology_points(self):
+        '''
+        Simply plot the height map in cartesian space
+
+        Returns
+        -------
+        None.
+
+        '''
+        zz = self.matrix[:, 12].reshape(self.grid.shape)
         plt.imshow(zz, cmap='binary')
         plt.show()
         
@@ -545,6 +561,8 @@ class topology():
         
         self.plot_topology()
         self.plot_topology_gradient()
+        
+        self.plot_topology_probability()
         self.plot_topology_points()
 
         self.export_mesh(output_path)
