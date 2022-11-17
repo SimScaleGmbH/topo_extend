@@ -2,6 +2,9 @@ from topoExtend.Topo_extend_v2 import topology
 import pathlib
 import numpy as np
 
+from sklearn import preprocessing
+
+
 input_path = pathlib.Path('test_case_1.stl')
 output_path = pathlib.Path('TOPOLOGY_EXTENSION.stl')
 
@@ -18,8 +21,8 @@ print('Before mesh reduction: {}'.format(no_triangles))
 
 print(np.max(mesh_clean.matrix[:, 11]))
 print(np.min(mesh_clean.matrix[:, 11]))
-print(mesh_clean.matrix[:, 10])
-print(mesh_clean.matrix[:, 11])
+
+
 '''
 mesh_clean.reduce_mesh_target_size(50) #Megabytes
 no_triangles = mesh_clean.get_no_triangles()
