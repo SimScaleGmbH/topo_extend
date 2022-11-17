@@ -297,7 +297,7 @@ class topology():
         inner_lower_bound = 0.5
         
         normalised = np.where(
-            normalised < inner_lower_bound & self.matrix[:, 7] < self.disk_radius, 
+            (normalised < inner_lower_bound) & (self.matrix[:, 7] < self.disk_radius), 
             inner_lower_bound, normalised)
         
         return normalised
