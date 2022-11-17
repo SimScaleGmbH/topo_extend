@@ -96,7 +96,7 @@ class topology():
         y_col = yy.reshape(-1)
         z_col = zz.reshape(-1)
 
-        matrix = np.zeros([x_col.shape[0], 12])
+        matrix = np.zeros([x_col.shape[0], 13])
 
         matrix[:, 0] = x_col
         matrix[:, 1] = y_col
