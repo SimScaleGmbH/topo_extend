@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 from scipy import interpolate
 from scipy.ndimage import gaussian_filter
 
-from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 
 from stl import mesh
 import stl
 import pyvista
+import pyvista as pv
 
 
 
@@ -503,6 +503,19 @@ class topology():
         
         final_mesh.save(output_path, mode=stl.stl.Mode.ASCII)
         
+    def _export_reduced_mesh(self, output_path):
+        
+        self.output_path = output_path
+        
+        xyz = self.inclusion_matrix[0:3, :]
+        points = pv.PolyData(xyz)
+        
+        remesh = points.delaunay_2d()
+        remesh.save(self.output_path.as_posix(), 
+                    binary=False,
+                    texture=None)
+        
+        
     def get_no_triangles(self):
         eval_mesh = o3d.io.read_triangle_mesh(
             self.output_path.as_posix())
@@ -592,5 +605,6 @@ class topology():
         
         self.plot_topology_probability()
         self.plot_topology_points()
-
-        self.export_mesh(output_path)
+        
+        self._export_reduced_mesh(output_path)
+        #self.export_mesh(output_path)
