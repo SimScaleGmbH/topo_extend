@@ -348,7 +348,7 @@ class topology():
 
         '''
         zz = self.matrix[:, 10].reshape(self.grid.shape)
-        plt.imshow(np.abs(zz), cmap='gray')
+        plt.imshow(np.abs(zz), vmin=0, vmax=10)
         plt.show()
         
     def plot_topology_points(self):
