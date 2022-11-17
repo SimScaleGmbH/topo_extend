@@ -278,7 +278,8 @@ class topology():
                                        nintyith_percentile, absolute_matrix)
             
             scaler = MinMaxScaler()
-            data = np.log(1*absolute_matrix)
+            #data = np.log(1*absolute_matrix)
+            data = absolute_matrix
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
