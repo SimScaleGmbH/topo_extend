@@ -278,6 +278,8 @@ class topology():
         
         self.matrix[:, 13] = randProb(self.matrix[:, 12])
         
+        self._cut_circle()
+        
         boolean_matrix = np.where(self.matrix[:, 13] == 1, True, False)
         
         self.inclusion_matrix = self.matrix[boolean_matrix, :]
@@ -507,7 +509,7 @@ class topology():
         
         self.output_path = output_path
         
-        xyz = self.inclusion_matrix[:, 0:3]
+        xyz = self.inclusion_matrix[:, [0, 1, 8]]
         points = pv.PolyData(xyz)
         
         remesh = points.delaunay_2d()
@@ -596,7 +598,6 @@ class topology():
         
         self._gradient()
         self._inclusion()
-        self._cut_circle()
         
         print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 13])))
         
