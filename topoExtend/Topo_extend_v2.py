@@ -269,32 +269,38 @@ class topology():
                 
             return np.where(rand < prob, 1, 0)
         
-        def createProabilityMatrix(matrix):
-            
-            absolute_matrix = np.abs(matrix.reshape(-1, 1))
-            
-            nintyith_percentile = np.percentile(absolute_matrix, 99)
-            absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
-                                       nintyith_percentile, absolute_matrix)
-            
-            scaler = MinMaxScaler()
-            #data = np.log(1*absolute_matrix)
-            data = absolute_matrix
-            scaler.fit(data)
-            
-            lower_bound = 0.1
-            
-            normalised = scaler.transform(data)[:,0]
-            normalised = np.where(normalised < lower_bound, 
-                                  lower_bound, normalised)
-            
-            return normalised
         
-        self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10])
+        
+        self.matrix[:, 11] = self.createProabilityMatrix(self.matrix[:, 10])
         
         self.matrix[:, 12] = randProb(self.matrix[:, 11])
         
+    def _createProabilityMatrix(self):
         
+        absolute_matrix = np.abs(self.matrix[:, 10].reshape(-1, 1))
+        
+        nintyith_percentile = np.percentile(absolute_matrix, 99)
+        absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
+                                   nintyith_percentile, absolute_matrix)
+        
+        scaler = MinMaxScaler()
+        #data = np.log(1*absolute_matrix)
+        data = absolute_matrix
+        scaler.fit(data)
+        
+        outer_lower_bound = 0.1
+        
+        normalised = scaler.transform(data)[:,0]
+        normalised = np.where(normalised < outer_lower_bound, 
+                              outer_lower_bound, normalised)
+        
+        inner_lower_bound = 0.5
+        
+        normalised = np.where(
+            normalised < inner_lower_bound & self.matrix[:, 7] < self.disk_radius, 
+            inner_lower_bound, normalised)
+        
+        return normalised
         
         
     def _cut_circle(self):
