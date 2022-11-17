@@ -274,7 +274,7 @@ class topology():
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             scaler = MinMaxScaler()
-            data = np.log(10*absolute_matrix)
+            data = np.log(1*absolute_matrix)
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
