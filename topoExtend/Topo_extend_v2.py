@@ -520,8 +520,10 @@ class topology():
         self._create_smoothed_matrix()
         self._blend_matricies()
         self._gradient()
+        self._inclusion()
         
         self.plot_topology()
         self.plot_topology_gradient()
+        self.plot_topology_points()
 
         self.export_mesh(output_path)
