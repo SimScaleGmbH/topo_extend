@@ -271,7 +271,7 @@ class topology():
         
         
         
-        self.matrix[:, 11] = self._createProabilityMatrix(self.matrix[:, 10])
+        self.matrix[:, 11] = self._createProabilityMatrix()
         
         self.matrix[:, 12] = randProb(self.matrix[:, 11])
         
