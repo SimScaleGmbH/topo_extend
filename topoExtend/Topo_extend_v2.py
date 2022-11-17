@@ -277,7 +277,9 @@ class topology():
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
-            return randProb(1.1*normalised)
+            points = randProb(1.1*normalised)
+            print(np.sum(points))
+            return points
         
         self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10])
         
