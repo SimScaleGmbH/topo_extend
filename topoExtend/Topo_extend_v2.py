@@ -351,8 +351,14 @@ class topology():
         None.
 
         '''
+        
+        
         zz = self.matrix[:, 10].reshape(self.grid.shape)
-        plt.imshow(np.abs(zz), vmin=0, vmax=10)
+        abs_zz = np.abs(zz)
+        nintyith_percentile = np.percentile(abs_zz, 90)
+        
+        
+        plt.imshow(abs_zz, vmin=0, vmax=nintyith_percentile)
         plt.show()
         
     def plot_topology_points(self):
