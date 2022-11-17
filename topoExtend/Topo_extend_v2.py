@@ -283,6 +283,7 @@ class topology():
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
+            normalised = np.where(normalised < 0.2, 0.2, normalised)
             
             return normalised
         
