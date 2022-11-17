@@ -273,6 +273,9 @@ class topology():
             print("Number of points in original mesh: {}".format(len(matrix)))
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
+            nintyith_percentile = np.percentile(absolute_matrix, 90)
+            print(nintyith_percentile)
+            
             scaler = MinMaxScaler()
             data = np.log(1*absolute_matrix)
             scaler.fit(data)
