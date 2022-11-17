@@ -273,7 +273,8 @@ class topology():
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             scaler = MinMaxScaler()
-            scaler.fit(self.matrix[:, 10].reshape(-1, 1))
+            data = np.log(absolute_matrix)
+            scaler.fit(data)
             
             normalised = scaler.transform(self.matrix[:, 10].reshape(-1, 1))[:,0]
             return randProb(normalised)
