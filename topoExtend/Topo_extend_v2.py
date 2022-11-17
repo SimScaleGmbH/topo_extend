@@ -263,7 +263,7 @@ class topology():
         
     def _inclusion(self):
         def createProabilityMatrix(matrix, _max=1):
-            absolute_matrix = np.abs(matrix)
+            absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             return preprocessing.normalize(np.log(absolute_matrix))
 

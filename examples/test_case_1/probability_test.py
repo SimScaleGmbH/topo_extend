@@ -10,10 +10,10 @@ import numpy as np
 from sklearn import preprocessing
 
 #Generate random sample grid
-grid = np.random.rand(10, 10)*10
+grid = np.random.rand(10)*10
 
 def createProabilityMatrix(matrix, _max=1):
-    absolute_matrix = np.abs(matrix)
+    absolute_matrix = np.abs(matrix.reshape(-1, 1))
     
     return preprocessing.normalize(np.log(absolute_matrix))
 
