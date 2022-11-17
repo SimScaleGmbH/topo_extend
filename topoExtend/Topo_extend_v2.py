@@ -280,7 +280,7 @@ class topology():
         
         absolute_matrix = np.abs(self.matrix[:, 11].reshape(-1, 1))
         
-        nintyith_percentile = np.percentile(absolute_matrix, 85)
+        nintyith_percentile = np.percentile(absolute_matrix, 90)
         absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
                                    nintyith_percentile, absolute_matrix)
         
