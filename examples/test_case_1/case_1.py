@@ -9,7 +9,7 @@ input_path = pathlib.Path('test_case_1.stl')
 output_path = pathlib.Path('TOPOLOGY_EXTENSION.stl')
 
 mesh_clean = topology(origin=[99.5, 101, 0],
-                      resolution=1)
+                      resolution=0.5)
 
 mesh_clean.extend_stl(input_path,
                       output_path,
