@@ -291,7 +291,12 @@ class topology():
         
         self.matrix[:, 12] = randProb(self.matrix[:, 11])
         
+        
         print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 12])))
+        
+    def _cut_circle(self):
+        self.matrix[:, 12] = np.where(self.matrix[:, 7] > self.extension_radius,
+                                      0, self.matrix[:, 12])
         
     def _create_smoothed_matrix(self):
         '''
@@ -559,6 +564,7 @@ class topology():
         self._blend_matricies()
         self._gradient()
         self._inclusion()
+        self._cut_circle()
         
         self.plot_topology()
         self.plot_topology_gradient()
