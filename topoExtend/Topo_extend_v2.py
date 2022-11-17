@@ -35,6 +35,8 @@ class topology():
         self.output_mesh = None
         
         self.matrix = None
+        self.inclusion_matrix = None
+        
         self.polar_matrix = None
         self.grid = None
         
@@ -275,6 +277,10 @@ class topology():
         self.matrix[:, 12] = self._createProabilityMatrix()
         
         self.matrix[:, 13] = randProb(self.matrix[:, 12])
+        
+        boolean_matrix = np.where(self.matrix[:, 13] == 1, True, False)
+        
+        self.inclusion_matrix = self.matrix[boolean_matrix, :]
         
     def _createProabilityMatrix(self):
         
