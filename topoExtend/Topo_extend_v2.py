@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from scipy import interpolate
 from scipy.ndimage import gaussian_filter
 
+from sklearn import preprocessing
+
 from stl import mesh
 import stl
 import pyvista
@@ -76,7 +78,8 @@ class topology():
         self.mesh_max = self.mesh.get_max_bound().astype(int)
 
         #Geometry point matrix will have dimensions:
-        #   x, y, z, nx, ny, nz, theta, radius, distance, blured distance, combined distance
+        #   x, y, z, nx, ny, nz, theta, radius, distance, blured distance, 
+        #   combined distance, gradient, point inclusion
         #
         #Therefore, matrix will be n x 9
         
@@ -92,7 +95,7 @@ class topology():
         y_col = yy.reshape(-1)
         z_col = zz.reshape(-1)
 
-        matrix = np.zeros([x_col.shape[0], 11])
+        matrix = np.zeros([x_col.shape[0], 12])
 
         matrix[:, 0] = x_col
         matrix[:, 1] = y_col
@@ -258,6 +261,19 @@ class topology():
     def _gradient(self):
         self.matrix[:, 10] = np.gradient(self.matrix[:, 9])
         
+    def _inclusion(self):
+        def createProabilityMatrix(matrix, _max=1):
+            absolute_matrix = np.abs(matrix)
+            
+            return preprocessing.normalize(np.log(absolute_matrix))
+
+        def randProb(prob):
+            rand = np.random.rand(*prob.shape)
+                
+            return np.where(rand < prob, 1, 0)
+        
+        self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10], 1)
+        
     def _create_smoothed_matrix(self):
         '''
         create a smoothed cartesian space using gausian blur
@@ -322,6 +338,19 @@ class topology():
 
         '''
         zz = self.matrix[:, 10].reshape(self.grid.shape)
+        plt.imshow(zz)
+        plt.show()
+        
+    def plot_topology_points(self):
+        '''
+        Simply plot the height map in cartesian space
+
+        Returns
+        -------
+        None.
+
+        '''
+        zz = self.matrix[:, 11].reshape(self.grid.shape)
         plt.imshow(zz)
         plt.show()
         
