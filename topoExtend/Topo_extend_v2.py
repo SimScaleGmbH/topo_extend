@@ -270,10 +270,10 @@ class topology():
         
         def createProabilityMatrix(matrix, _max=1):
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
-            normalised = preprocessing.normalize(np.log(absolute_matrix))[:,0]
+            normalised = preprocessing.normalize(absolute_matrix)[:,0]
             
             normalised = np.where(normalised < 0, 0, normalised)
-            return normalised
+            return randProb(normalised)
         
         self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10], 1)
         
