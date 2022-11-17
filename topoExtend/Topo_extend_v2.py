@@ -270,7 +270,7 @@ class topology():
             return np.where(rand < prob, 1, 0)
         
         def createProabilityMatrix(matrix):
-            print("Number of points in original mesh: {}".format(len(matrix)))
+            
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             nintyith_percentile = np.percentile(absolute_matrix, 99)
@@ -282,8 +282,11 @@ class topology():
             data = absolute_matrix
             scaler.fit(data)
             
+            lower_bound = 0.1
+            
             normalised = scaler.transform(data)[:,0]
-            normalised = np.where(normalised < 0.2, 0.2, normalised)
+            normalised = np.where(normalised < lower_bound, 
+                                  lower_bound, normalised)
             
             return normalised
         
@@ -292,7 +295,7 @@ class topology():
         self.matrix[:, 12] = randProb(self.matrix[:, 11])
         
         
-        print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 12])))
+        
         
     def _cut_circle(self):
         self.matrix[:, 12] = np.where(self.matrix[:, 7] > self.extension_radius,
@@ -562,9 +565,14 @@ class topology():
         self._interpolate_missing_from_polar()
         self._create_smoothed_matrix()
         self._blend_matricies()
+        
+        print("Number of points in original mesh: {}".format(len(self.matrix[:, 10])))
+        
         self._gradient()
         self._inclusion()
         self._cut_circle()
+        
+        print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 12])))
         
         self.plot_topology()
         self.plot_topology_gradient()
