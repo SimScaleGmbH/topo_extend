@@ -255,6 +255,9 @@ class topology():
         
         matrix[index] = zz1[index]
         
+    def _gradient(self):
+        self.matrix[:, 10] = np.gradient(self.matrix[:, 9])
+        
     def _create_smoothed_matrix(self):
         '''
         create a smoothed cartesian space using gausian blur
@@ -306,6 +309,19 @@ class topology():
 
         '''
         zz = self.matrix[:, 8].reshape(self.grid.shape)
+        plt.imshow(zz)
+        plt.show()
+        
+    def plot_topology_gradient(self):
+        '''
+        Simply plot the height map in cartesian space
+
+        Returns
+        -------
+        None.
+
+        '''
+        zz = self.matrix[:, 10].reshape(self.grid.shape)
         plt.imshow(zz)
         plt.show()
         
@@ -474,7 +490,9 @@ class topology():
         self._interpolate_missing_from_polar()
         self._create_smoothed_matrix()
         self._blend_matricies()
+        self._gradient()
         
         self.plot_topology()
+        self.plot_topology_gradient()
 
         self.export_mesh(output_path)
