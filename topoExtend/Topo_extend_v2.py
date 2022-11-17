@@ -291,7 +291,7 @@ class topology():
         
         self.matrix[:, 12] = randProb(self.matrix[:, 11])
         
-        print("Number of points in final mesh: {}".format(self.matrix[:, 12]))
+        print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 12])))
         
     def _create_smoothed_matrix(self):
         '''
