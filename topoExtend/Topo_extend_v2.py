@@ -261,6 +261,7 @@ class topology():
         
     def _gradient(self):
         self.matrix[:, 10] = np.gradient(self.matrix[:, 9])
+        self.matrix[:, 11] = np.gradient(self.matrix[:, 10])
         
     def _inclusion(self):
         
@@ -372,7 +373,7 @@ class topology():
         '''
         
         
-        zz = self.matrix[:, 10].reshape(self.grid.shape)
+        zz = self.matrix[:, 11].reshape(self.grid.shape)
         abs_zz = np.abs(zz)
         nintyith_percentile = np.percentile(abs_zz, 99)
         
