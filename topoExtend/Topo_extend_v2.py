@@ -275,7 +275,7 @@ class topology():
             scaler = MinMaxScaler()
             scaler.fit(self.matrix[:, 10].reshape(-1, 1))
             
-            normalised = scaler.transform(self.matrix[:, 10].reshape(-1, 1))
+            normalised = scaler.transform(self.matrix[:, 10].reshape(-1, 1))[:,0]
             #normalised = preprocessing.normalize(absolute_matrix)[:,0]
             
             #normalised = np.where(normalised < 0, 0, normalised)
