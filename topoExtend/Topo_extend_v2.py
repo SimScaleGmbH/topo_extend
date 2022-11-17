@@ -265,7 +265,7 @@ class topology():
         def createProabilityMatrix(matrix, _max=1):
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
-            return preprocessing.normalize(np.log(absolute_matrix))
+            return preprocessing.normalize(np.log(absolute_matrix))[:,0]
 
         def randProb(prob):
             rand = np.random.rand(*prob.shape)
