@@ -274,7 +274,8 @@ class topology():
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             nintyith_percentile = np.percentile(absolute_matrix, 90)
-            print(nintyith_percentile)
+            absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
+                                       nintyith_percentile, absolute_matrix)
             
             scaler = MinMaxScaler()
             data = np.log(1*absolute_matrix)
