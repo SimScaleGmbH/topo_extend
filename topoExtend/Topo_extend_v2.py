@@ -262,15 +262,18 @@ class topology():
         self.matrix[:, 10] = np.gradient(self.matrix[:, 9])
         
     def _inclusion(self):
-        def createProabilityMatrix(matrix, _max=1):
-            absolute_matrix = np.abs(matrix.reshape(-1, 1))
-            
-            return preprocessing.normalize(np.log(absolute_matrix))[:,0]
-
+        
         def randProb(prob):
             rand = np.random.rand(*prob.shape)
                 
             return np.where(rand < prob, 1, 0)
+        
+        def createProabilityMatrix(matrix, _max=1):
+            absolute_matrix = np.abs(matrix.reshape(-1, 1))
+            normalised = preprocessing.normalize(np.log(absolute_matrix))[:,0]
+            
+            normalised = np.where(normalised < 0, 0, normalised)
+            return normalised
         
         self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10], 1)
         
