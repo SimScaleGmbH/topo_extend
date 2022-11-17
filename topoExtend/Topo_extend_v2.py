@@ -80,7 +80,7 @@ class topology():
 
         #Geometry point matrix will have dimensions:
         #   x, y, z, nx, ny, nz, theta, radius, distance, blured distance, 
-        #   combined distance, gradient, probability, point inclusion
+        #   combined distance, gradient, 2nd Gradient, probability, point inclusion
         #
         #Therefore, matrix will be n x 9
         
@@ -96,7 +96,7 @@ class topology():
         y_col = yy.reshape(-1)
         z_col = zz.reshape(-1)
 
-        matrix = np.zeros([x_col.shape[0], 13])
+        matrix = np.zeros([x_col.shape[0], 14])
 
         matrix[:, 0] = x_col
         matrix[:, 1] = y_col
@@ -271,9 +271,9 @@ class topology():
         
         
         
-        self.matrix[:, 11] = self._createProabilityMatrix()
+        self.matrix[:, 12] = self._createProabilityMatrix()
         
-        self.matrix[:, 12] = randProb(self.matrix[:, 11])
+        self.matrix[:, 13] = randProb(self.matrix[:, 12])
         
     def _createProabilityMatrix(self):
         
@@ -304,8 +304,8 @@ class topology():
         
         
     def _cut_circle(self):
-        self.matrix[:, 12] = np.where(self.matrix[:, 7] > self.extension_radius,
-                                      0, self.matrix[:, 12])
+        self.matrix[:, 13] = np.where(self.matrix[:, 7] > self.extension_radius,
+                                      0, self.matrix[:, 13])
         
     def _create_smoothed_matrix(self):
         '''
@@ -389,7 +389,7 @@ class topology():
         None.
 
         '''
-        zz = self.matrix[:, 11].reshape(self.grid.shape)
+        zz = self.matrix[:, 12].reshape(self.grid.shape)
         plt.imshow(zz)
         plt.show()
         
@@ -402,7 +402,7 @@ class topology():
         None.
 
         '''
-        zz = self.matrix[:, 12].reshape(self.grid.shape)
+        zz = self.matrix[:, 13].reshape(self.grid.shape)
         plt.imshow(zz, cmap='binary')
         plt.show()
         
@@ -578,7 +578,7 @@ class topology():
         self._inclusion()
         self._cut_circle()
         
-        print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 12])))
+        print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 13])))
         
         self.plot_topology()
         self.plot_topology_gradient()
