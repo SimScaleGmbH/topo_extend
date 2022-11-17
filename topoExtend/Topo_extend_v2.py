@@ -270,6 +270,7 @@ class topology():
             return np.where(rand < prob, 1, 0)
         
         def createProabilityMatrix(matrix):
+            print("Number of points in original mesh: {}".format(len(matrix)))
             absolute_matrix = np.abs(matrix.reshape(-1, 1))
             
             scaler = MinMaxScaler()
@@ -278,7 +279,7 @@ class topology():
             
             normalised = scaler.transform(data)[:,0]
             points = randProb(1.1*normalised)
-            print(np.sum(points))
+            print("Number of points in final mesh: {}".format(np.sum(points)))
             return points
         
         self.matrix[:, 11] = createProabilityMatrix(self.matrix[:, 10])
