@@ -507,7 +507,7 @@ class topology():
         
         self.output_path = output_path
         
-        xyz = self.inclusion_matrix[0:3, :]
+        xyz = self.inclusion_matrix[:, 0:3]
         points = pv.PolyData(xyz)
         
         remesh = points.delaunay_2d()
