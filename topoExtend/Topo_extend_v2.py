@@ -283,7 +283,7 @@ class topology():
             scaler.fit(data)
             
             normalised = scaler.transform(data)[:,0]
-            points = randProb(1.1*normalised)
+            points = randProb(normalised)
             print("Number of points in final mesh: {}".format(np.sum(points)))
             return points
         
