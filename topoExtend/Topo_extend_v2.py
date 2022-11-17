@@ -280,7 +280,7 @@ class topology():
         
         absolute_matrix = np.abs(self.matrix[:, 11].reshape(-1, 1))
         
-        nintyith_percentile = np.percentile(absolute_matrix, 95)
+        nintyith_percentile = np.percentile(absolute_matrix, 98)
         absolute_matrix = np.where(absolute_matrix > nintyith_percentile, 
                                    nintyith_percentile, absolute_matrix)
         
@@ -295,7 +295,7 @@ class topology():
         normalised = np.where(normalised < outer_lower_bound, 
                               outer_lower_bound, normalised)
         
-        inner_lower_bound = 0.5
+        inner_lower_bound = 0.25
         
         normalised = np.where(
             (normalised < inner_lower_bound) & (self.matrix[:, 7] < self.disc_radius), 
