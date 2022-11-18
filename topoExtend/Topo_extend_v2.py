@@ -307,7 +307,7 @@ class topology():
         
         normalised = np.where(
             self.matrix[:, 7] < self.disc_radius, 
-            1, 0)
+            normalised_inner, 0)
         
         return normalised
         
