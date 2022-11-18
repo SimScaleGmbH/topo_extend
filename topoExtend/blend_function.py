@@ -83,8 +83,9 @@ def interp_from_p(p, data):
     return output
 
 def get_probability_from_graient2(gradient2, min_prob=0.1):
+    print("Calculating the sigmoid...")
     p, cv = p_sigmoid_from_data(gradient2, 0.5, min_prob)
-
+    print("Interpolating data to the sigmoid...")
     interp = interp_from_p(p, gradient2)
     
     return interp
