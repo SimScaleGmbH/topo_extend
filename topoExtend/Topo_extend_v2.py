@@ -12,7 +12,7 @@ import stl
 import pyvista
 import pyvista as pv
 
-
+import blend_function as bf
 
 class topology():
     
@@ -283,7 +283,7 @@ class topology():
         boolean_matrix = np.where(self.matrix[:, 13] == 1, True, False)
         
         self.inclusion_matrix = self.matrix[boolean_matrix, :]
-        
+    
     def _createProabilityMatrix(self):
         
         absolute_matrix = np.abs(self.matrix[:, 11].reshape(-1, 1))
@@ -295,6 +295,9 @@ class topology():
         scaler = MinMaxScaler()
         #data = np.log(1*absolute_matrix)
         data = absolute_matrix
+        
+        normalised = bf.get_probability_from_graient2(data, 0.1)
+        '''
         scaler.fit(data)
         
         outer_lower_bound = 0.1
@@ -302,12 +305,12 @@ class topology():
         normalised = scaler.transform(data)[:,0]
         normalised = np.where(normalised < outer_lower_bound, 
                               outer_lower_bound, normalised)
-        
+        '''
         inner_lower_bound = 0.25
         
         normalised = np.where(
-            (normalised < inner_lower_bound) & (self.matrix[:, 7] < self.disc_radius), 
-            inner_lower_bound, normalised)
+            self.matrix[:, 7] < self.disc_radius, 
+            bf.get_probability_from_graient2(data, 0.25), normalised)
         
         return normalised
         
