@@ -294,7 +294,7 @@ class topology():
         
         scaler = MinMaxScaler()
         #data = np.log(1*absolute_matrix)
-        data = absolute_matrix
+        data = np.log(absolute_matrix)
         scaler.fit(data)
         
         outer_lower_bound = 0.1
