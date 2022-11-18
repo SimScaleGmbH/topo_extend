@@ -264,6 +264,8 @@ class topology():
     def _gradient(self):
         zz = self.matrix[:, 9].reshape(self.grid.shape[0], self.grid.shape[1])
         print(zz.shape)
+        gradient_1 = np.gradient(zz).reshape(-1)
+        print(gradient_1)
         self.matrix[:, 10] = np.gradient(zz).reshape(-1)
         
         zz = self.matrix[:, 10].reshape(self.grid.shape[0], self.grid.shape[1])
