@@ -12,7 +12,7 @@ import stl
 import pyvista
 import pyvista as pv
 
-import blend_function as bf
+import topoExtend.blend_function as bf
 
 class topology():
     
