@@ -540,18 +540,22 @@ class topology():
                                     direction=[0, 0, 1],
                                     radius=self.disc_radius, 
                                     height=highest_height).triangulate()
+        cylinder = cylinder.compute_normals(cell_normals=True)
         
         remesh = remesh.extrude_trim((0, 0, -1.0), plane).triangulate()
+        remesh = remesh.compute_normals(cell_normals=True)
         
         far_field = remesh.boolean_difference(cylinder)
         
         recentred_far_field = far_field.translate(self.origin, inplace=True)
         
+        
         far_field_stem = self.output_path.stem + "_FARFIELD"
         far_field_path = self.output_path
         
         ext = far_field_path.suffix
-        far_field_path.rename(pathlib.Path(far_field_path.parent, far_field_stem + ext))
+        far_field_path.rename(pathlib.Path(far_field_path.parent, 
+                                           far_field_stem + ext))
         
         recentred_far_field.save(far_field_path.as_posix(), 
                                  binary=False,
