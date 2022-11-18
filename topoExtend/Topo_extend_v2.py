@@ -262,7 +262,10 @@ class topology():
         matrix[index] = zz1[index]
         
     def _gradient(self):
-        self.matrix[:, 10] = np.gradient(self.matrix[:, 9])
+        zz = self.matrix[:, 9].reshape(self.grid.shape)
+        self.matrix[:, 10] = np.gradient(zz).reshape(-1)
+        
+        zz = self.matrix[:, 10].reshape(self.grid.shape)
         self.matrix[:, 11] = np.gradient(self.matrix[:, 10])
         
     def _inclusion(self):
