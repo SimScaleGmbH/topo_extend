@@ -263,7 +263,6 @@ class topology():
         
     def _gradient(self):
         zz = self.matrix[:, 9].reshape(self.grid.shape[0], self.grid.shape[1])
-        print(zz.shape)
         gradient_1 = np.gradient(zz)
         gradient_1_mag = (gradient_1[0]**2 + gradient_1[1]**2)**0.5
         self.matrix[:, 10] = gradient_1_mag.reshape(-1)
@@ -377,8 +376,27 @@ class topology():
         zz = self.matrix[:, 8].reshape(self.grid.shape)
         plt.imshow(zz)
         plt.show()
+    
+    def plot_topology_gradient1(self):
+        '''
+        Simply plot the height map in cartesian space
+
+        Returns
+        -------
+        None.
+
+        '''
         
-    def plot_topology_gradient(self):
+        
+        zz = self.matrix[:, 10].reshape(self.grid.shape)
+        abs_zz = np.abs(zz)
+        nintyith_percentile = np.percentile(abs_zz, 99)
+        
+        
+        plt.imshow(abs_zz, vmin=0, vmax=nintyith_percentile)
+        plt.show()    
+    
+    def plot_topology_gradient2(self):
         '''
         Simply plot the height map in cartesian space
 
@@ -613,7 +631,8 @@ class topology():
         print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 13])))
         
         self.plot_topology()
-        self.plot_topology_gradient()
+        self.plot_topology_gradient1()
+        self.plot_topology_gradient2()
         
         self.plot_topology_probability()
         self.plot_topology_points()
