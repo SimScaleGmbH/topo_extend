@@ -8,6 +8,7 @@ from scipy.ndimage import gaussian_filter
 from stl import mesh
 import stl
 import pyvista
+import pathlib
 import pyvista as pv
 
 import topoExtend.blend_function as bf
@@ -548,7 +549,9 @@ class topology():
         
         far_field_stem = self.output_path.stem + "_FARFIELD"
         far_field_path = self.output_path
-        far_field_path.stem.replace(far_field_stem)
+        
+        ext = far_field_path.suffix
+        far_field_path.rename(pathlib.Path(far_field_path.parent, far_field_stem + ext))
         
         recentred_far_field.save(far_field_path.as_posix(), 
                                  binary=False,
