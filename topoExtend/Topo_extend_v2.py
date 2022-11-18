@@ -526,6 +526,15 @@ class topology():
         
         remesh = points.delaunay_2d()
         
+        plane = pv.Plane(
+            center=(0, 0, np.min(self.inclusion_matrix[:, 8])-5),
+            direction=(0, 0, -1),
+            i_size=30,
+            j_size=30,
+            )
+        
+        remesh = remesh.extrude_trim((0, 0, -1.0), plane)
+        
         recentred = remesh.translate(self.origin, inplace=True)
         
         recentred.save(self.output_path.as_posix(), 
