@@ -272,10 +272,9 @@ class topology():
                 
             return np.where(rand < prob, 1, 0)
         
-        
-        
+        print("Create probability")
         self.matrix[:, 12] = self._createProabilityMatrix()
-        
+        print("plot_prob")
         self.plot_topology_probability()
         
         self.matrix[:, 13] = randProb(self.matrix[:, 12])
