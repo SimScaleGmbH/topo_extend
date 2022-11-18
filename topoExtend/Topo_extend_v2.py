@@ -548,7 +548,7 @@ class topology():
         
         far_field_stem = self.output_path.stem + "_FARFIELD"
         far_field_path = self.output_path
-        far_field_path.stem = far_field_stem
+        far_field_path.stem.replace(far_field_stem)
         
         recentred_far_field.save(far_field_path.as_posix(), 
                                  binary=False,
