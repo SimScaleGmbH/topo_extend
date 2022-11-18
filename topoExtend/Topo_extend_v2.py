@@ -272,10 +272,7 @@ class topology():
                 
             return np.where(rand < prob, 1, 0)
         
-        print("Create probability")
         self.matrix[:, 12] = self._createProabilityMatrix()
-        print("plot_prob")
-        self.plot_topology_probability()
         
         self.matrix[:, 13] = randProb(self.matrix[:, 12])
         
@@ -297,7 +294,7 @@ class topology():
         #data = np.log(1*absolute_matrix)
         data = absolute_matrix
         
-        normalised = bf.get_probability_from_graient2(data, 0.1)
+        normalised = bf.get_probability_from_graient2(data, 0.1, 0.1)
         '''
         scaler.fit(data)
         
@@ -309,7 +306,7 @@ class topology():
         '''
         inner_lower_bound = 0.25
         
-        normalised_outer = bf.get_probability_from_graient2(data, 0.25)
+        normalised_outer = bf.get_probability_from_graient2(data, 0.1, 0.25)
         '''
         normalised = np.where(
             self.matrix[:, 7] < self.disc_radius, 

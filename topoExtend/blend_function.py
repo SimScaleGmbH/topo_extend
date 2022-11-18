@@ -82,7 +82,7 @@ def interp_from_p(p, data):
     
     return output
 
-def get_probability_from_graient2(gradient2, min_prob=0.1):
+def get_probability_from_graient2(gradient2, ratio, min_prob=0.1):
     print("Calculating the sigmoid...")
     p, cv = p_sigmoid_from_data(gradient2, 0.5, min_prob)
     print("Interpolating data to the sigmoid...")
@@ -91,7 +91,7 @@ def get_probability_from_graient2(gradient2, min_prob=0.1):
     
     return interp
 
-
+'''
 import matplotlib.pyplot as plt
 
 data = np.random.rand(100000)*10
@@ -113,3 +113,4 @@ plt.xlabel('Second Gradient')
 plt.ylabel('Probability')
 plt.xlim(0, 10)
 plt.show()
+'''
