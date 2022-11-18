@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 from scipy import interpolate
 from scipy.ndimage import gaussian_filter
 
-from sklearn.preprocessing import MinMaxScaler
-
 from stl import mesh
 import stl
 import pyvista
@@ -293,21 +291,8 @@ class topology():
         
         absolute_matrix = np.abs(self.matrix[:, 11])
         
-        
-        #scaler = MinMaxScaler()
-        #data = np.log(1*absolute_matrix)
         data = absolute_matrix
-        print(data)
         normalised_outer = bf.get_probability_from_graient2(data, 0.9, 0.1)
-        '''
-        scaler.fit(data)
-        
-        outer_lower_bound = 0.1
-        
-        normalised = scaler.transform(data)[:,0]
-        normalised = np.where(normalised < outer_lower_bound, 
-                              outer_lower_bound, normalised)
-        '''
         inner_lower_bound = 0.25
         
         normalised_inner = bf.get_probability_from_graient2(
@@ -584,7 +569,7 @@ class topology():
     def extend_stl(self, 
                    input_path,
                    output_path,
-                   extension_radius=1000,
+                   extension_radius=2000,
                    inclusion_radius=300,
                    ):
         '''
