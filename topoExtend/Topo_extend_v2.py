@@ -298,7 +298,7 @@ class topology():
         #data = np.log(1*absolute_matrix)
         data = absolute_matrix
         print(data)
-        normalised_outer = bf.get_probability_from_graient2(data, 0.5, 0.1)
+        normalised_outer = bf.get_probability_from_graient2(data, 0.9, 0.1)
         '''
         scaler.fit(data)
         
