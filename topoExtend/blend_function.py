@@ -57,15 +57,13 @@ def p_sigmoid_from_data(data, ratio, min_prob=0.1):
     maximum = np.max(data)*1.01
     minimum = np.min(data)*0.99
     
-    percentile = np.percentile(data, 90)
     
-    mid_x = (percentile - minimum)*(1-ratio)
+    mid_x = (maximum - minimum)*(1-ratio)
     
     maximum_probability = 1
     minimum_probability = min_prob
     
     cv = np.array([[ maximum,  maximum_probability],
-                   #[percentile, maximum_probability],
                    [ mid_x,  maximum_probability],
                    [mid_x, minimum_probability],
                    [ minimum,  minimum_probability]])
