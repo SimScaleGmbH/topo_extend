@@ -303,12 +303,12 @@ class topology():
         '''
         #inner_lower_bound = 0.25
         
-        normalised_inner = bf.get_probability_from_graient2(data, 0.1, 0.25)
-        
+        #normalised_inner = bf.get_probability_from_graient2(data, 0.1, 0.25)
+        '''
         normalised = np.where(
             self.matrix[:, 7] < self.disc_radius, 
             normalised_inner, 0)
-        
+        '''
         return normalised_outer
         
         
