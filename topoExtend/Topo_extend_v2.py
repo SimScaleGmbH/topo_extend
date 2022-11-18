@@ -517,7 +517,7 @@ class topology():
         
         final_mesh.save(output_path, mode=stl.stl.Mode.ASCII)
         
-    def _export_reduced_mesh(self, output_path):
+    def export_reduced_mesh(self, output_path):
         
         self.output_path = output_path
         
@@ -568,7 +568,6 @@ class topology():
         
     def extend_stl(self, 
                    input_path,
-                   output_path,
                    extension_radius=2000,
                    inclusion_radius=300,
                    ):
@@ -622,6 +621,3 @@ class topology():
         
         self.plot_topology_probability()
         self.plot_topology_points()
-        
-        self._export_reduced_mesh(output_path)
-        #self.export_mesh(output_path)
