@@ -314,7 +314,7 @@ class topology():
             self.matrix[:, 7] < self.disc_radius, 
             normalised_outer, normalised)
         
-        return normalised
+        return normalised[:, 0]
         
         
     def _cut_circle(self):
