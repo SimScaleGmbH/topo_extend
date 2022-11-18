@@ -266,12 +266,12 @@ class topology():
         print(zz.shape)
         gradient_1 = np.gradient(zz)
         gradient_1_mag = (gradient_1[0]**2 + gradient_1[1]**2)**0.5
-        self.matrix[:, 10] = gradient_1_mag.reshape[-1]
+        self.matrix[:, 10] = gradient_1_mag.reshape(-1)
         
         zz = self.matrix[:, 10].reshape(self.grid.shape[0], self.grid.shape[1])
         gradient_2 = np.gradient(zz)
         gradient_2_mag = (gradient_2[0]**2 + gradient_2[1]**2)**0.5
-        self.matrix[:, 11] = gradient_2_mag.reshape[-1]
+        self.matrix[:, 11] = gradient_2_mag.reshape(-1)
         
     def _inclusion(self):
         
