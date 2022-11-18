@@ -284,7 +284,7 @@ class topology():
     
     def _createProabilityMatrix(self):
         
-        absolute_matrix = np.abs(self.matrix[:, 11].reshape(-1, 1))
+        absolute_matrix = np.abs(self.matrix[:, 11])
         
         
         #scaler = MinMaxScaler()
@@ -309,7 +309,7 @@ class topology():
             self.matrix[:, 7] < self.disc_radius, 
             1, 0)
         
-        return normalised[:, 0]
+        return normalised
         
         
     def _cut_circle(self):
