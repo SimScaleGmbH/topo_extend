@@ -276,6 +276,8 @@ class topology():
         
         self.matrix[:, 12] = self._createProabilityMatrix()
         
+        self.plot_topology_probability()
+        
         self.matrix[:, 13] = randProb(self.matrix[:, 12])
         
         self._cut_circle()
