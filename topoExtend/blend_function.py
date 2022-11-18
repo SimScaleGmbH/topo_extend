@@ -76,7 +76,7 @@ def p_sigmoid_from_data(data, ratio, min_prob=0.1):
 
 def interp_from_p(p, data):
     #output = np.interp(data, p[:, 0], p[:, 1])
-    f = si.interp1d(p[:, 0], p[:, 1])
+    f = si.interp1d(p[:, 0], p[:, 1], kind='nearest')
     
     output = f(data)
     
