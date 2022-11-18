@@ -524,7 +524,7 @@ class topology():
         xyz = self.inclusion_matrix[:, [0, 1, 8]]
         points = pv.PolyData(xyz)
         
-        remesh = points.delaunay_2d().triangulate()
+        remesh = points.delaunay_2d()
         
         lowest_height = np.min(self.inclusion_matrix[:, 8])-5
         highest_height = np.max(self.inclusion_matrix[:, 8])+5
@@ -540,7 +540,7 @@ class topology():
                                     radius=self.disc_radius, 
                                     height=highest_height).triangulate()
         
-        remesh = remesh.extrude_trim((0, 0, -1.0), plane)
+        remesh = remesh.extrude_trim((0, 0, -1.0), plane).triangulate()
         
         far_field = remesh.boolean_difference(cylinder)
         
