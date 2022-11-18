@@ -13,7 +13,7 @@ mesh_clean = topology(origin=[99.5, 101, 0],
 
 mesh_clean.extend_stl(input_path,
                       output_path,
-                      extension_radius=100,
+                      extension_radius=500,
                       inclusion_radius=50)
 
 no_triangles = mesh_clean.get_no_triangles()
