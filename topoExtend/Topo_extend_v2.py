@@ -298,7 +298,7 @@ class topology():
         #data = np.log(1*absolute_matrix)
         data = absolute_matrix
         print(data)
-        normalised_outer = bf.get_probability_from_graient2(data, 0.9, 0.2)
+        normalised_outer = bf.get_probability_from_graient2(data, 0.9, 0.1)
         '''
         scaler.fit(data)
         
@@ -308,9 +308,10 @@ class topology():
         normalised = np.where(normalised < outer_lower_bound, 
                               outer_lower_bound, normalised)
         '''
-        #inner_lower_bound = 0.25
+        inner_lower_bound = 0.25
         
-        normalised_inner = bf.get_probability_from_graient2(data, 0.9, 0.1)
+        normalised_inner = bf.get_probability_from_graient2(
+            data, 0.9, inner_lower_bound)
         
         normalised = np.where(
             self.matrix[:, 7] < self.disc_radius, 
