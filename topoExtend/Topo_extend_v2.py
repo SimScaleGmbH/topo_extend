@@ -524,7 +524,7 @@ class topology():
         xyz = self.inclusion_matrix[:, [0, 1, 8]]
         points = pv.PolyData(xyz)
         
-        remesh = points.delaunay_2d()
+        remesh = points.delaunay_2d().triangulate()
         
         lowest_height = np.min(self.inclusion_matrix[:, 8])-5
         highest_height = np.max(self.inclusion_matrix[:, 8])+5
@@ -538,7 +538,7 @@ class topology():
         cylinder = pyvista.Cylinder(center=[0, 0, lowest_height], 
                                     direction=[0, 0, 1],
                                     radius=self.disc_radius, 
-                                    height=highest_height)
+                                    height=highest_height).triangulate()
         
         remesh = remesh.extrude_trim((0, 0, -1.0), plane)
         
