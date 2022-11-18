@@ -526,20 +526,33 @@ class topology():
         
         remesh = points.delaunay_2d()
         
+        lowest_height = np.min(self.inclusion_matrix[:, 8])-5
+        highest_height = np.max(self.inclusion_matrix[:, 8])+5
+        
         plane = pv.Plane(
-            center=(0, 0, np.min(self.inclusion_matrix[:, 8])-5),
+            center=(0, 0, lowest_height),
             direction=(0, 0, -1),
             i_size=self.extension_radius*2,
             j_size=self.extension_radius*2,
             )
+        cylinder = pyvista.Cylinder(center=[0, 0, lowest_height], 
+                                    direction=[0, 0, 1],
+                                    radius=self.disc_radius, 
+                                    height=highest_height)
         
         remesh = remesh.extrude_trim((0, 0, -1.0), plane)
         
-        recentred = remesh.translate(self.origin, inplace=True)
+        far_field = remesh.boolean_difference(cylinder)
         
-        recentred.save(self.output_path.as_posix(), 
-                       binary=False,
-                       texture=None)
+        recentred_far_field = far_field.translate(self.origin, inplace=True)
+        
+        far_field_stem = self.output_path.stem + "_FARFIELD"
+        far_field_path = self.output_path.copy()
+        far_field_path.stem = far_field_stem
+        
+        recentred_far_field.save(far_field_path.as_posix(), 
+                                 binary=False,
+                                 texture=None)
         
         
     def get_no_triangles(self):
