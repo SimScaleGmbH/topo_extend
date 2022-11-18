@@ -529,8 +529,8 @@ class topology():
         plane = pv.Plane(
             center=(0, 0, np.min(self.inclusion_matrix[:, 8])-5),
             direction=(0, 0, -1),
-            i_size=self.extension_radius,
-            j_size=self.extension_radius,
+            i_size=self.extension_radius*2,
+            j_size=self.extension_radius*2,
             )
         
         remesh = remesh.extrude_trim((0, 0, -1.0), plane)
