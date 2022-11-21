@@ -531,6 +531,7 @@ class topology():
         remesh = points.delaunay_2d()
         
         cell_centres = remesh.cell_centers().points
+        print(cell_centres.shape)
         cell_radius = (cell_centres[:, 0]**2 + cell_centres[:, 1]**2)**0.5
         print(np.where(np.any(cell_radius>self.disc_radius, axis=1)))
         
