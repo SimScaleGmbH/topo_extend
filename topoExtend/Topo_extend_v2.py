@@ -7,9 +7,6 @@ from scipy.ndimage import gaussian_filter
 
 from stl import mesh
 import stl
-import pyvista
-import copy
-import pathlib
 import pyvista as pv
 
 import topoExtend.blend_function as bf
@@ -544,15 +541,15 @@ class topology():
         recentered_farfield = farfield_cells.translate(self.origin, inplace=True)
         recentered_nearfield = nearfield_cells.translate(self.origin, inplace=True)
         
-        farfield_path = copy.deepcopy(output_path)
+        farfield_path = output_path
         farfield_path = farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
         print(farfield_path)
-        recentered_farfield.save(farfield_path, 
+        recentered_farfield.save(farfield_path,
                                  binary=False,
                                  texture=None)
         
-        nearfield_path = copy.deepcopy(output_path)
+        nearfield_path = output_path
         nearfield_path = nearfield_path.with_stem('TOPOLOGY')
         
         print(nearfield_path)
@@ -577,7 +574,7 @@ class topology():
         Legacy
 
         '''
-        mesh = pyvista.read(self.output_path.as_posix())
+        mesh = pv.read(self.output_path.as_posix())
         decimated = mesh.decimate(percentage)
         decimated.save(self.output_path.as_posix(), 
                   binary=False,
