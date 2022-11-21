@@ -527,38 +527,6 @@ class topology():
         
         remesh = points.delaunay_2d()
         
-        lowest_height = np.min(self.inclusion_matrix[:, 8])-5
-        highest_height = np.max(self.inclusion_matrix[:, 8])+5
-        
-        plane = pv.Plane(
-            center=(0, 0, lowest_height),
-            direction=(0, 0, -1),
-            i_size=self.extension_radius*2,
-            j_size=self.extension_radius*2,
-            )
-        cylinder = pyvista.Cylinder(center=[0, 0, lowest_height-5], 
-                                    direction=[0, 0, 1],
-                                    radius=self.disc_radius, 
-                                    height=highest_height-lowest_height+5).triangulate()
-        
-        cylinder = cylinder.compute_normals(cell_normals=True)
-        
-        remesh = remesh.extrude_trim((0, 0, -1.0), plane).triangulate()
-        remesh = remesh.compute_normals(cell_normals=True)
-        
-        far_field = remesh.boolean_difference(cylinder)
-        
-        recentred_far_field = far_field.translate(self.origin, inplace=True)
-        
-        remesh.PolyDataFilters.plot_normals()
-        '''
-        far_field_stem = self.output_path.stem + "_FARFIELD"
-        far_field_path = self.output_path
-        
-        ext = far_field_path.suffix
-        far_field_path.rename(pathlib.Path(far_field_path.parent, 
-                                           far_field_stem + ext))
-        '''
         recentered = remesh.translate(self.origin, inplace=True)
         recentered.save(output_path, 
                         binary=False,
