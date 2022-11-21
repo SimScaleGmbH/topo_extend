@@ -441,8 +441,11 @@ class topology():
         plt.imshow(zz)
         plt.show()
         
-    def export_mesh(self, output_path):
+    def export_mesh_legacy(self, output_path):
         '''
+        Legacy
+        
+        Old mesh export
         Take a path for an STL, export the height map into an stl mesh
 
         Parameters
@@ -518,7 +521,7 @@ class topology():
         
         final_mesh.save(output_path, mode=stl.stl.Mode.ASCII)
         
-    def export_reduced_mesh(self, output_path):
+    def export_mesh(self, output_path):
         
         self.output_path = output_path
         
@@ -527,12 +530,18 @@ class topology():
         
         remesh = points.delaunay_2d()
         
+        print(remesh.cell_centers())
+        
         recentered = remesh.translate(self.origin, inplace=True)
         recentered.save(output_path, 
                         binary=False,
                         texture=None)
         
     def get_no_triangles(self):
+        '''
+        Legacy
+
+        '''
         eval_mesh = o3d.io.read_triangle_mesh(
             self.output_path.as_posix())
 
@@ -541,6 +550,10 @@ class topology():
         return triangles
     
     def reduce_mesh_percentage(self, percentage):
+        '''
+        Legacy
+
+        '''
         mesh = pyvista.read(self.output_path.as_posix())
         decimated = mesh.decimate(percentage)
         decimated.save(self.output_path.as_posix(), 
@@ -548,11 +561,19 @@ class topology():
                   texture=None)
         
     def reduce_mesh_target_number(self, number_of_triangles=200000.0):
+        '''
+        Legacy
+
+        '''
         percentage = 1 - (number_of_triangles / self.get_no_triangles())
         
         self.reduce_mesh_percentage(percentage)
         
     def reduce_mesh_target_size(self, no_mega_bytes=50):
+        '''
+        Legacy
+        
+        '''
         x1 = 200000
         y1 = 50.9
         
