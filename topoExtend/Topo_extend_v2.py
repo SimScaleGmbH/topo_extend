@@ -547,13 +547,14 @@ class topology():
         farfield_path = copy.deepcopy(output_path)
         farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
-        nearfield_path = copy.deepcopy(output_path)
-        nearfield_path.with_stem('TOPOLOGY')
-        
         print(farfield_path)
         recentered_farfield.save(farfield_path, 
                                  binary=False,
                                  texture=None)
+        
+        nearfield_path = copy.deepcopy(output_path)
+        nearfield_path.with_stem('TOPOLOGY')
+        
         print(nearfield_path)
         recentered_nearfield.save(nearfield_path, 
                                  binary=False,
