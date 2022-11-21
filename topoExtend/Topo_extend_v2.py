@@ -533,7 +533,7 @@ class topology():
         cell_centres = remesh.cell_centers().points
         
         cell_radius = (cell_centres[:, 0]**2 + cell_centres[:, 1]**2)**0.5
-        farfield_cell_idx = np.transpose(np.nonzero(cell_radius>self.disc_radius))[0]
+        farfield_cell_idx = np.transpose(np.nonzero(cell_radius>self.disc_radius))
         farfield_cells = remesh.extract_cells(farfield_cell_idx)
         print(farfield_cells)
         recentered = farfield_cells.translate(self.origin, inplace=True)
