@@ -549,10 +549,11 @@ class topology():
         nearfield_path = output_path
         nearfield_path.with_stem('TOPOLOGY')
         
+        print(farfield_path)
         recentered_farfield.save(farfield_path, 
                                  binary=False,
                                  texture=None)
-        
+        print(nearfield_path)
         recentered_nearfield.save(nearfield_path, 
                                  binary=False,
                                  texture=None)
