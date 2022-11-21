@@ -539,9 +539,7 @@ class topology():
         recentered_farfield = farfield_cells.translate(self.origin, inplace=True)
         
         farfield_path = output_path
-        farfield_path.rename(
-            pathlib.Path(farfield_path.parent, 
-                         'TOPOLOGY_EXTENSION_FARFIELD' + farfield_path.suffix))
+        farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
         recentered_farfield.save(farfield_path, 
                                  binary=False,
