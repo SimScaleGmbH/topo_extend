@@ -536,10 +536,11 @@ class topology():
             i_size=self.extension_radius*2,
             j_size=self.extension_radius*2,
             )
-        cylinder = pyvista.Cylinder(center=[0, 0, lowest_height], 
+        cylinder = pyvista.Cylinder(center=[0, 0, lowest_height-5], 
                                     direction=[0, 0, 1],
                                     radius=self.disc_radius, 
-                                    height=highest_height).triangulate()
+                                    height=highest_height-lowest_height+5).triangulate()
+        
         cylinder = cylinder.compute_normals(cell_normals=True)
         
         remesh = remesh.extrude_trim((0, 0, -1.0), plane).triangulate()
