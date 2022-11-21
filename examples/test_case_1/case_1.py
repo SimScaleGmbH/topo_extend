@@ -15,7 +15,7 @@ mesh_clean.extend_stl(input_path,
                       extension_radius=500,
                       inclusion_radius=50)
 
-mesh_clean.export_reduced_mesh(output_path)
+mesh_clean.export_mesh(output_path)
 
 #Return the number of triangles in the mesh
 #no_triangles = mesh_clean.get_no_triangles()
