@@ -8,6 +8,7 @@ from scipy.ndimage import gaussian_filter
 from stl import mesh
 import stl
 import pyvista
+import copy
 import pathlib
 import pyvista as pv
 
@@ -543,10 +544,10 @@ class topology():
         recentered_farfield = farfield_cells.translate(self.origin, inplace=True)
         recentered_nearfield = nearfield_cells.translate(self.origin, inplace=True)
         
-        farfield_path = output_path
+        farfield_path = copy.deapcopy(output_path)
         farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
-        nearfield_path = output_path
+        nearfield_path = copy.deapcopy(output_path)
         nearfield_path.with_stem('TOPOLOGY')
         
         print(farfield_path)
