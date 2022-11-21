@@ -535,7 +535,7 @@ class topology():
         
         cell_radius = (cell_centres[:, 0]**2 + cell_centres[:, 1]**2)**0.5
         
-        farfield_cell_idx = np.transpose(np.nonzero(cell_radius>self.disc_radius))
+        farfield_cell_idx = np.transpose(np.nonzero(cell_radius>=self.disc_radius))
         farfield_cells = remesh.extract_cells(farfield_cell_idx).extract_surface()
         
         nearfield_cell_idx = np.transpose(np.nonzero(cell_radius<=self.disc_radius))
