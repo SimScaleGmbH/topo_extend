@@ -533,15 +533,27 @@ class topology():
         cell_centres = remesh.cell_centers().points
         
         cell_radius = (cell_centres[:, 0]**2 + cell_centres[:, 1]**2)**0.5
+        
         farfield_cell_idx = np.transpose(np.nonzero(cell_radius>self.disc_radius))
         farfield_cells = remesh.extract_cells(farfield_cell_idx).extract_surface()
         
+        nearfield_cell_idx = np.transpose(np.nonzero(cell_radius<=self.disc_radius))
+        nearfield_cells = remesh.extract_cells(nearfield_cell_idx).extract_surface()
+        
         recentered_farfield = farfield_cells.translate(self.origin, inplace=True)
+        recentered_nearfield = nearfield_cells.translate(self.origin, inplace=True)
         
         farfield_path = output_path
         farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
+        nearfield_path = output_path
+        nearfield_path.with_stem('TOPOLOGY')
+        
         recentered_farfield.save(farfield_path, 
+                                 binary=False,
+                                 texture=None)
+        
+        recentered_nearfield.save(nearfield_path, 
                                  binary=False,
                                  texture=None)
         
