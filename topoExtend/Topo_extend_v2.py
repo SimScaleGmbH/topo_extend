@@ -550,18 +550,19 @@ class topology():
         
         recentred_far_field = far_field.translate(self.origin, inplace=True)
         
-        
+        remesh.PolyDataFilters.plot_normals()
+        '''
         far_field_stem = self.output_path.stem + "_FARFIELD"
         far_field_path = self.output_path
         
         ext = far_field_path.suffix
         far_field_path.rename(pathlib.Path(far_field_path.parent, 
                                            far_field_stem + ext))
-        
-        recentred_far_field.save(far_field_path.as_posix(), 
-                                 binary=False,
-                                 texture=None)
-        
+        '''
+        recentered = remesh.translate(self.origin, inplace=True)
+        recentered.save(output_path, 
+                        binary=False,
+                        texture=None)
         
     def get_no_triangles(self):
         eval_mesh = o3d.io.read_triangle_mesh(
