@@ -544,7 +544,6 @@ class topology():
         farfield_path = output_path
         farfield_path = farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
-        print(farfield_path)
         recentered_farfield.save(farfield_path,
                                  binary=False,
                                  texture=None)
@@ -552,7 +551,6 @@ class topology():
         nearfield_path = output_path
         nearfield_path = nearfield_path.with_stem('TOPOLOGY')
         
-        print(nearfield_path)
         recentered_nearfield.save(nearfield_path, 
                                  binary=False,
                                  texture=None)
@@ -610,6 +608,7 @@ class topology():
                    input_path,
                    extension_radius=2000,
                    inclusion_radius=300,
+                   debug=False
                    ):
         '''
         A function that wraps a typical process into a workflow
@@ -655,9 +654,10 @@ class topology():
         
         print("Number of points in final mesh: {}".format(np.sum(self.matrix[:, 13])))
         
-        self.plot_topology()
-        self.plot_topology_gradient1()
-        self.plot_topology_gradient2()
-        
-        self.plot_topology_probability()
-        self.plot_topology_points()
+        if debug:
+            self.plot_topology()
+            self.plot_topology_gradient1()
+            self.plot_topology_gradient2()
+            
+            self.plot_topology_probability()
+            self.plot_topology_points()
