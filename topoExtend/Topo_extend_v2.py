@@ -530,7 +530,7 @@ class topology():
         
         remesh = points.delaunay_2d()
         
-        print(remesh.cell_centers())
+        print(remesh.cell_centers().points)
         
         recentered = remesh.translate(self.origin, inplace=True)
         recentered.save(output_path, 
