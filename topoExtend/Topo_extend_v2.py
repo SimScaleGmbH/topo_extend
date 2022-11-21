@@ -529,7 +529,7 @@ class topology():
         points = pv.PolyData(xyz)
         
         remesh = points.delaunay_2d()
-        
+        print(remesh)
         cell_centres = remesh.cell_centers().points
         
         cell_radius = (cell_centres[:, 0]**2 + cell_centres[:, 1]**2)**0.5
