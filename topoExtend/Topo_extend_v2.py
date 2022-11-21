@@ -545,7 +545,7 @@ class topology():
         recentered_nearfield = nearfield_cells.translate(self.origin, inplace=True)
         
         farfield_path = copy.deepcopy(output_path)
-        farfield_path.with_stem('TOPOLOGY_EXTENSION')
+        farfield_path = farfield_path.with_stem('TOPOLOGY_EXTENSION')
         
         print(farfield_path)
         recentered_farfield.save(farfield_path, 
@@ -553,7 +553,7 @@ class topology():
                                  texture=None)
         
         nearfield_path = copy.deepcopy(output_path)
-        nearfield_path.with_stem('TOPOLOGY')
+        nearfield_path = nearfield_path.with_stem('TOPOLOGY')
         
         print(nearfield_path)
         recentered_nearfield.save(nearfield_path, 
