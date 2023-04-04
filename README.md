@@ -36,9 +36,13 @@ mesh_clean = topology(origin=[0,0,0],
 Perform the extension
 ```bash
 mesh_clean.extend_stl(input_path,
-                      output_path,
                       extension_radius=500,
                       inclusion_radius=50)
+```
+
+Export the meshes as STL's'
+```bash
+mesh_clean.export_mesh(output_path)
 ```
 
 Output
@@ -79,12 +83,14 @@ A hole in the topology is defined by an area withing the main disk, which is sur
 Holes are not desired in a topology since flow might drastically effect CFD results. To combat this, we advise users to at least roughly patch the hole prior to running this script. However, to further safegard, if a hole is present this script automatically fills the hole with a height of the lowest point in the topology. This is the most simple form of handling and prevents the worst flow interactions with holes.
 
 # Future development
-1. Cut the mesh and export as a region of interest mesh, inclusion mesh and extension mesh.
-2. Fill gaps in the mesh that lie in the inclusion circle
-3. Create some reporting where the height map, and explaination of the topology elements are given. For example, what holes were filled automatically or where was the region of inclusion and region of interest defined.
-4. A CLI function to do some default processing
-5. integrate the CLI into a grasshopper component.
+1. Fill gaps in the mesh that lie in the inclusion circle
+2. Create some reporting where the height map, and explaination of the topology elements are given. For example, what holes were filled automatically or where was the region of inclusion and region of interest defined.
+3. A CLI function to do some default processing
+4. integrate the CLI into a grasshopper component.
 
 # Change log
 17.08.22: Added functionality to reduce a mesh by %, also added a fix for some topology extensions were infinity was reported for the highest points.
+
 19.08.22: Added functionality to reduce a mesh to a target number of triangles or to a target file size in megabytes.
+
+04.04.23: Topology extension now exports two STL files, one for extension, one for the inner disk. New method implemented for mesh size reduction, what use to take hours now takes under 5 mins.
