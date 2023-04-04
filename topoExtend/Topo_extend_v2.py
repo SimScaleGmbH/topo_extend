@@ -62,7 +62,7 @@ class topology():
         
     def create_matrix(self):
         '''
-        Take the mesh, create aa matrix
+        Take the mesh, create a matrix
         
         The matrix is of nx11:
             x, y, z, nx, ny, nz, theta, radius, distance, blured distance, combined distance
@@ -259,6 +259,17 @@ class topology():
         matrix[index] = zz1[index]
         
     def _gradient(self):
+        '''
+        Create matrix of gradient magnitude, and second gradient magnitude
+        
+        Second gradients are used to identify where harsh changes in topology
+        are present, and therefore, will need more resolution
+
+        Returns
+        -------
+        None.
+
+        '''
         zz = self.matrix[:, 9].reshape(self.grid.shape[0], self.grid.shape[1])
         gradient_1 = np.gradient(zz)
         gradient_1_mag = (gradient_1[0]**2 + gradient_1[1]**2)**0.5
@@ -270,6 +281,19 @@ class topology():
         self.matrix[:, 11] = gradient_2_mag.reshape(-1)
         
     def _inclusion(self):
+        '''
+        Determin is a pixel is included in the final mesh
+        
+        Probabilistic way of determining if a pixel should be included,
+        if a high second gradient, a higher probability is given, and more 
+        resolution is therefore present in the end mesh.
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        '''
         
         def randProb(prob):
             rand = np.random.rand(*prob.shape)
@@ -287,7 +311,18 @@ class topology():
         self.inclusion_matrix = self.matrix[boolean_matrix, :]
     
     def _createProabilityMatrix(self):
+        '''
+        Create a probability matrix from second gradient
         
+        As the previous method states, a higher probability is given to high
+        second gradient values.
+
+        Returns
+        -------
+        normalised : np.array
+            An array of 1 or 0.
+
+        '''
         absolute_matrix = np.abs(self.matrix[:, 11])
         
         data = absolute_matrix
@@ -305,6 +340,14 @@ class topology():
         
         
     def _cut_circle(self):
+        '''
+        Cuts the grid, into a circle of same diameter
+
+        Returns
+        -------
+        None.
+
+        '''
         self.matrix[:, 13] = np.where(self.matrix[:, 7] > self.extension_radius,
                                       0, self.matrix[:, 13])
         
@@ -439,86 +482,6 @@ class topology():
         plt.imshow(zz)
         plt.show()
         
-    def export_mesh_legacy(self, output_path):
-        '''
-        Legacy
-        
-        Old mesh export
-        Take a path for an STL, export the height map into an stl mesh
-
-        Parameters
-        ----------
-        output_path : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
-        '''
-        
-        def return_vector_List(xyz_array):
-            #Legacy function
-            x, y, z = xyz_array[1, :, :], xyz_array[0, :, :], xyz_array[2, :, :]
-            
-            x, y, z = x.reshape(-1), y.reshape(-1), z.reshape(-1)
-            
-            vector_list = np.array([x, y, z]).T
-            return vector_list
-
-        def return_face_vector_list(list_coordinate_points):
-            #Legacy function
-            list_coordinate_list = []
-            for _list in list_coordinate_points:
-                list_coordinate_list.append(return_vector_List(_list))
-            
-            return np.stack(list_coordinate_list, axis=1)
-
-        def base_array_to_face_vector(base_array):
-            #Legacy function
-            coordinate_p1 = base_array[:, :-1, :-1]
-            coordinate_p2 = base_array[:, 1:, :-1]
-            coordinate_p3 = base_array[:, 1:, 1:]
-            coordinate_p4 = base_array[:, :-1, 1:]
-            
-            #We need two faces per pixel
-            vector_list1 = return_face_vector_list([coordinate_p1, 
-                                                          coordinate_p2, 
-                                                          coordinate_p3])
-            
-            vector_list2 = return_face_vector_list([coordinate_p1, 
-                                                          coordinate_p4, 
-                                                          coordinate_p3])
-
-            vector_list = np.concatenate([vector_list1, vector_list2], axis=0)
-            
-            return vector_list
-        
-        self.output_path = output_path
-        
-        matrix = self.matrix
-        mask = np.isinf(matrix[:, 8])
-        matrix[:, 8][mask] = (np.ones(matrix[:, 8].shape)*self.mesh_min[2])[mask]
-        
-        xx = matrix[:, 0].reshape(self.grid.shape[0:2])
-        yy = matrix[:, 1].reshape(self.grid.shape[0:2])
-        zz = matrix[:, 8].reshape(self.grid.shape[0:2])
-        
-        base_array = np.array([yy, xx, zz])
-        vector_list = base_array_to_face_vector(base_array)
-        
-        no_faces = (xx.shape[0]-1) * (yy.shape[1]-1) * 2
-
-        final_mesh = mesh.Mesh(np.zeros(no_faces, dtype=mesh.Mesh.dtype))
-        final_mesh.vectors = vector_list
-        
-        final_mesh.translate(self.origin)
-        
-        self.output_mesh=final_mesh
-        
-        final_mesh.save(output_path, mode=stl.stl.Mode.ASCII)
-        
     def export_mesh(self, output_path):
         
         self.output_path = output_path
@@ -554,55 +517,6 @@ class topology():
         recentered_nearfield.save(nearfield_path, 
                                  binary=False,
                                  texture=None)
-        
-    def get_no_triangles(self):
-        '''
-        Legacy
-
-        '''
-        eval_mesh = o3d.io.read_triangle_mesh(
-            self.output_path.as_posix())
-
-        triangles = len(eval_mesh.triangles)
-
-        return triangles
-    
-    def reduce_mesh_percentage(self, percentage):
-        '''
-        Legacy
-
-        '''
-        mesh = pv.read(self.output_path.as_posix())
-        decimated = mesh.decimate(percentage)
-        decimated.save(self.output_path.as_posix(), 
-                  binary=False,
-                  texture=None)
-        
-    def reduce_mesh_target_number(self, number_of_triangles=200000.0):
-        '''
-        Legacy
-
-        '''
-        percentage = 1 - (number_of_triangles / self.get_no_triangles())
-        
-        self.reduce_mesh_percentage(percentage)
-        
-    def reduce_mesh_target_size(self, no_mega_bytes=50):
-        '''
-        Legacy
-        
-        '''
-        x1 = 200000
-        y1 = 50.9
-        
-        x2 = 1000000
-        y2 = 243.4
-        
-        m = (y2-y1)/(x2-x1)
-        
-        x_t = no_mega_bytes/m
-        
-        self.reduce_mesh_target_number(number_of_triangles=x_t)
         
     def extend_stl(self, 
                    input_path,
