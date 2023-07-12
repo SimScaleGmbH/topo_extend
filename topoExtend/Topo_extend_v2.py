@@ -9,7 +9,7 @@ from stl import mesh
 import stl
 import pyvista as pv
 
-import topoExtend.blend_function as bf
+import blend_function as bf
 
 class topology():
     
@@ -24,7 +24,8 @@ class topology():
         self.origin = origin
         self.resolution = resolution 
         
-        self.disc_radius = None
+        self.roi_radius = None
+        self.inclusion_radius = None
         self.extension_radius = None
         self.angle_resolution = None
         
@@ -128,7 +129,7 @@ class topology():
         
         self.matrix = matrix
         
-    def _remove_outside_roi(self, inclusion_radius):
+    def _remove_outside_inclusion(self, inclusion_radius):
         '''
         Takes an inclusion radius and keeps anything within that radius.
 
@@ -148,7 +149,7 @@ class topology():
         
         matrix[index] = -np.inf
         
-        self.disc_radius = inclusion_radius
+        self.inclusion_radius = inclusion_radius
         self.matrix[:, 8] = matrix
         
     def _create_polar_matrix(self, angular_resolution=1):
@@ -333,7 +334,7 @@ class topology():
             data, 0.9, inner_lower_bound)
         
         normalised = np.where(
-            self.matrix[:, 7] < self.disc_radius, 
+            self.matrix[:, 7] < self.inclusion_radius, 
             normalised_inner, normalised_outer)
         
         return normalised
@@ -382,7 +383,7 @@ class topology():
         
         radius = self.matrix[:, 7]
         
-        reference_radius = radius - self.disc_radius + 10
+        reference_radius = radius - self.inclusion_radius + 10
         
         #clip to 1
         blend_function = 1/(1 + np.exp(-reference_radius))
@@ -495,10 +496,32 @@ class topology():
         
         cell_radius = (cell_centres[:, 0]**2 + cell_centres[:, 1]**2)**0.5
         
-        farfield_cell_idx = np.transpose(np.nonzero(cell_radius>=self.disc_radius))
+        farfield_cell_idx = np.transpose(np.nonzero(cell_radius>=self.inclusion_radius))
         farfield_cells = remesh.extract_cells(farfield_cell_idx).extract_surface()
         
-        nearfield_cell_idx = np.transpose(np.nonzero(cell_radius<=self.disc_radius))
+        if self.region_of_interest_radius == None:
+            nearfield_cell_idx = np.transpose(np.nonzero(
+                (cell_radius<=self.inclusion_radius)))
+        elif self.region_of_interest_radius >= self.inclusion_radius:
+            raise Exception("Cannot have a region of interest radius larger \
+                            than inclusion radius")
+        else:
+            nearfield_cell_idx = np.transpose(np.nonzero(
+                (cell_radius<=self.inclusion_radius) & \
+                (cell_radius>self.region_of_interest_radius)))
+                
+            roi_cell_idx = np.transpose(np.nonzero(
+                cell_radius<=self.region_of_interest_radius))
+            roi_cells = remesh.extract_cells(roi_cell_idx).extract_surface()
+            recentered_roi = roi_cells.translate(self.origin, inplace=True)
+            
+            roi_path = output_path
+            roi_path = roi_path.with_stem('TOPOLOGY_ROI')
+            
+            recentered_roi.save(roi_path,
+                                binary=False,
+                                texture=None)
+            
         nearfield_cells = remesh.extract_cells(nearfield_cell_idx).extract_surface()
         
         recentered_farfield = farfield_cells.translate(self.origin, inplace=True)
@@ -512,7 +535,7 @@ class topology():
                                  texture=None)
         
         nearfield_path = output_path
-        nearfield_path = nearfield_path.with_stem('TOPOLOGY')
+        nearfield_path = nearfield_path.with_stem('TOPOLOGY_Inclusion')
         
         recentered_nearfield.save(nearfield_path, 
                                  binary=False,
@@ -521,7 +544,8 @@ class topology():
     def extend_stl(self, 
                    input_path,
                    extension_radius=2000,
-                   inclusion_radius=300,
+                   inclusion_radius=400,
+                   region_of_interest_radius=300,
                    debug=False
                    ):
         '''
@@ -547,11 +571,12 @@ class topology():
         None.
 
         '''
+        self.region_of_interest_radius= region_of_interest_radius
         self.extension_radius = extension_radius
         self.import_mesh(input_path)
         
         self.create_matrix()
-        self._remove_outside_roi(inclusion_radius=inclusion_radius)
+        self._remove_outside_inclusion(inclusion_radius=inclusion_radius)
 
         self._create_polar_matrix(angular_resolution=1)
         
@@ -575,3 +600,21 @@ class topology():
             
             self.plot_topology_probability()
             self.plot_topology_points()
+            
+if __name__ == "__main__":
+    import pathlib
+    
+    input_path = pathlib.Path.cwd().parents[0] / (
+        'examples/test_case_1/test_case_1.stl')
+    output_path = pathlib.Path.cwd().parents[0] / (
+        'examples/test_case_1/TOPOLOGY_EXTENSION.stl')
+
+    mesh_clean = topology(origin=[99.5, 101, 0],
+                          resolution=0.5)
+
+    mesh_clean.extend_stl(input_path,
+                          extension_radius=500,
+                          inclusion_radius=50, 
+                          region_of_interest_radius=25)
+
+    mesh_clean.export_mesh(output_path)
