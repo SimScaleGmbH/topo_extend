@@ -10,6 +10,7 @@ mesh_clean = topology(origin=[99.5, 101, 0],
 
 mesh_clean.extend_stl(input_path,
                       extension_radius=500,
-                      inclusion_radius=50)
+                      inclusion_radius=50,
+                      region_of_interest_radius=25)
 
 mesh_clean.export_mesh(output_path)
