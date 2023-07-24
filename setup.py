@@ -3,7 +3,10 @@ import setuptools
 import sys
 version = sys.version_info[0:2]
 if version < (3, 9):
-    raise Exception('Requires python 3.9, you have python {}.{} installed'.format(
+    raise Exception('Requires 3.11 > python > 3.9, you have python {}.{} installed'.format(
+        version[0], version[1]))
+elif version == (3, 11):
+    raise Exception('Requires 3.11 > python > 3.9, you have python {}.{} installed'.format(
         version[0], version[1]))
 else:
     print('Python version 3.9 or later requirement already satisfied')
