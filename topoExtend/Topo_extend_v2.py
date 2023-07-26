@@ -538,7 +538,7 @@ class topology():
                                  texture=None)
         
         nearfield_path = output_path
-        nearfield_path = nearfield_path.with_stem('TOPOLOGY_Inclusion')
+        nearfield_path = nearfield_path.with_stem('TOPOLOGY_INCLUSION')
         
         recentered_nearfield.save(nearfield_path, 
                                  binary=False,
