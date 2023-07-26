@@ -5,11 +5,14 @@ import matplotlib.pyplot as plt
 from scipy import interpolate
 from scipy.ndimage import gaussian_filter
 
-from stl import mesh
-import stl
+#from stl import mesh
+#import stl
 import pyvista as pv
 
-import blend_function as bf
+try:
+    import blend_function as bf
+except:
+    import topoExtend.blend_function as bf
 
 class topology():
     
